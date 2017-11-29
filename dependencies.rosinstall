@@ -6,4 +6,4 @@
 
 - git:
     local-name: envi_nav
-uri: https://github.com/sjohns09/envi_nav.git
+    uri: https://github.com/sjohns09/envi_nav.git
