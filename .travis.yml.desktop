@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Link to .travis.yml
+Type=Link
+URL=https://github.com/felixduvallet/ros-travis-integration/blob/master/.travis.yml
+Icon=text-html
