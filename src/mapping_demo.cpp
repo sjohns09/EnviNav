@@ -17,20 +17,15 @@ int main(int argc, char **argv) {
   MapBuild map;
 
   std::string a = "";
-  int done = 0;
-  std::cout << "When done enter 'save' or to exit without saving enter 'exit'"
-            << std::endl;
-
-  while (done != 1) {
-    std::cin >> a;
-    if (a == "save") {
-      done = map.save_map();
-
-    } else if (a == "exit") {
-      done = 1;
-    }
+  std::cout << "In the terminal window, use the keys to drive the robot around and build the map" << std::endl <<
+      "When done building map type 'save' and press enter to save map" << std::endl;
+  std::cin >> a;
+  if (a == "save") {
+    map.save_map();
+    std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
+  } else {
+    std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
   }
-  std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
 
   ros::spin();
 

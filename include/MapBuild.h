@@ -11,7 +11,7 @@
 class MapBuild {
  public:
   MapBuild();
-  int save_map();
+  void save_map();
   virtual ~MapBuild();
 };
 
