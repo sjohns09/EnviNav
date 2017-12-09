@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES envi_nav
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -115,15 +116,14 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(mapping_demo src/mapping_demo.cpp src/MapBuild.cpp)
+target_link_libraries(mapping_demo envi_nav ${catkin_LIBRARIES})
+add_dependencies(mapping_demo envi_nav_generate_messages_cpp)
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/envi_nav.cpp
-# )
+add_library(envi_nav src/MapBuild.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
