@@ -18,7 +18,7 @@ MapBuild::MapBuild() {
 void MapBuild::save_map() {
   system("rosrun map_server map_saver -f $(rospack find envi_nav)/maps/home");
   ROS_INFO("Map Saved!");
-
+  std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
 }
 
 MapBuild::~MapBuild() {

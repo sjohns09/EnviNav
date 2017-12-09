@@ -17,12 +17,13 @@ int main(int argc, char **argv) {
   MapBuild map;
 
   std::string a = "";
-  std::cout << "In the terminal window, use the keys to drive the robot around and build the map" << std::endl <<
-      "When done building map type 'save' and press enter to save map" << std::endl;
+  std::cout << "In the terminal window, use the keyboard to drive the robot around to build the map" << std::endl <<
+      "Useful Keys: 'I' or ',' - Forward/Backward, 'J' or 'L' - Rotate, 'Q' or 'Z' - Inc/Dec Speed" << std::endl <<
+      "When done building the map, type 'save' and press enter" << std::endl;
+
   std::cin >> a;
   if (a == "save") {
     map.save_map();
-    std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
   } else {
     std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
   }
