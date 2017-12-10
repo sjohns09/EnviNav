@@ -9,8 +9,8 @@
     </include>
               
    	<!-- Localization -->
-   	<arg name="initial_pose_x" default="0.0"/>
-   	<arg name="initial_pose_y" default="0.0"/>
+   	<arg name="initial_pose_x" default="1.0"/>
+   	<arg name="initial_pose_y" default="-1.0"/>
    	<arg name="initial_pose_a" default="0.0"/>
    	<include file="$(find turtlebot_navigation)/launch/includes/amcl/amcl.launch.xml">
      	<arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
