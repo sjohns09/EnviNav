@@ -12,6 +12,10 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   sensor_msgs
+  nav_core
+  costmap_2d
+  base_local_planner
+  pluginlib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -123,7 +127,7 @@ target_link_libraries(mapping_demo envi_nav ${catkin_LIBRARIES})
 add_dependencies(mapping_demo envi_nav_generate_messages_cpp)
 
 ## Declare a C++ library
-add_library(envi_nav src/MapBuild.cpp)
+add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
