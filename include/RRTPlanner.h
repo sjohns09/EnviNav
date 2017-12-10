@@ -3,6 +3,8 @@
  *
  *  Created on: Dec 9, 2017
  *      Author: sammie
+ *
+ *      BSD License
  */
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
@@ -20,17 +22,32 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
  public:
   RRTPlanner();
   RRTPlanner(std::string name, costmap_2d::Costmap2DROS* costmapRos);
-  void initialize (std::string name, costmap_2d::Costmap2DROS* costmapRos);
+  void initialize(std::string name, costmap_2d::Costmap2DROS* costmapRos);
   bool makePlan(const geometry_msgs::PoseStamped& start,
                 const geometry_msgs::PoseStamped& goal,
                 std::vector<geometry_msgs::PoseStamped>& plan);
   virtual ~RRTPlanner();
 
  private:
-  bool is_robot_safe();
+  struct qTree {
+    geometry_msgs::PoseStamped q;
+    geometry_msgs::PoseStamped qNear;
+    int nearIndex;
+  };
+
+  geometry_msgs::PoseStamped rand_config();
+  int nearest_vertex(geometry_msgs::PoseStamped qRand);
+  bool path_safe(geometry_msgs::PoseStamped qRand, int iNear);
+  bool check_goal(geometry_msgs::PoseStamped qNew);
+  bool build_plan();
+
+  std::vector<qTree> _treeGraph;
+  std::vector<geometry_msgs::PoseStamped> _plan;
+  geometry_msgs::PoseStamped _goal;
+  geometry_msgs::PoseStamped _start;
   costmap_2d::Costmap2DROS* _costmapROS;
   costmap_2d::Costmap2D* _costmap;
-  base_local_planner::WorldModel* _localModel;
+  double _stepSize, _sampleRange;
 
 };
 
