@@ -1,0 +1,26 @@
+<launch>
+   	<!-- Map server -->
+   	<arg name="map_file" default="$(find envi_nav)/maps/demo_built_map/home.yaml"/>
+   	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+    
+    <!-- Turtlebot Simulation -->
+    <include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch" >
+    	<arg name="world_file" value="$(find envi_nav)/maps/world/apartment.sdf" />
+    </include>
+              
+   	<!-- Localization -->
+   	<arg name="initial_pose_x" default="0.0"/>
+   	<arg name="initial_pose_y" default="0.0"/>
+   	<arg name="initial_pose_a" default="0.0"/>
+   	<include file="$(find turtlebot_navigation)/launch/includes/amcl/amcl.launch.xml">
+     	<arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+     	<arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+     	<arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+   	</include>
+
+   	<!-- Move base -->
+   	<include file="$(find envi_nav)/launch/includes/move_base.launch.xml" />
+
+	<!-- Start RVIZ -->
+	<include file="$(find turtlebot_rviz_launchers)/launch/view_navigation.launch" />
+ </launch>
