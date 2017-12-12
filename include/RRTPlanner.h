@@ -32,13 +32,14 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   struct qTree {
     geometry_msgs::PoseStamped q;
     geometry_msgs::PoseStamped qNear;
+    int myIndex;
     int nearIndex;
   };
 
   geometry_msgs::PoseStamped rand_config();
   int nearest_vertex(geometry_msgs::PoseStamped qRand);
   bool path_safe(geometry_msgs::PoseStamped qRand, int iNear);
-  bool check_goal(geometry_msgs::PoseStamped qNew);
+  bool check_goal(geometry_msgs::PoseStamped qNew, int iNew);
   bool build_plan();
 
   std::vector<qTree> _treeGraph;
@@ -48,6 +49,7 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   costmap_2d::Costmap2DROS* _costmapROS;
   costmap_2d::Costmap2D* _costmap;
   double _stepSize, _sampleRange;
+  int _mapSizeX, _mapSizeY;
 
 };
 
