@@ -41,6 +41,8 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   bool path_safe(geometry_msgs::PoseStamped qRand, int iNear);
   bool check_goal(geometry_msgs::PoseStamped qNew, int iNew);
   bool build_plan();
+  void rviz_map(double& x, double& y);
+  void map_rviz(double& x, double& y);
 
   std::vector<qTree> _treeGraph;
   std::vector<geometry_msgs::PoseStamped> _plan;
@@ -48,8 +50,9 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   geometry_msgs::PoseStamped _start;
   costmap_2d::Costmap2DROS* _costmapROS;
   costmap_2d::Costmap2D* _costmap;
-  double _stepSize, _sampleRange;
+  float _resolution, _originX, _originY;
   int _mapSizeX, _mapSizeY;
+  bool _initialized;
 
 };
 

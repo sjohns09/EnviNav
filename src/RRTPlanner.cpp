@@ -22,8 +22,7 @@ PLUGINLIB_EXPORT_CLASS(RRTPlanner, nav_core::BaseGlobalPlanner)
 
 RRTPlanner::RRTPlanner() {
   ROS_ERROR("Need to call constructor with name and costmap");
-  //_costmap(NULL);
-  //_localModel = NULL;
+
 }
 
 RRTPlanner::RRTPlanner(std::string name, costmap_2d::Costmap2DROS* costmapRos) {
@@ -32,23 +31,46 @@ RRTPlanner::RRTPlanner(std::string name, costmap_2d::Costmap2DROS* costmapRos) {
 
 void RRTPlanner::initialize(std::string name,
                             costmap_2d::Costmap2DROS* costmapRos) {
+  srand(time(NULL));
   _costmapROS = costmapRos;
   _costmap = costmapRos->getCostmap();
 
-//  ros::NodeHandle private_nh("~/" + name);
-//  private_nh.param("step_size", _stepSize, _costmap->getResolution());
+  ros::NodeHandle private_nh("~/" + name);
+  // private_nh.param("step_size", _stepSize, _costmap->getResolution());
 
   _mapSizeX = _costmap->getSizeInCellsX();
   _mapSizeY = _costmap->getSizeInCellsY();
-  _stepSize = 1; //_costmap->getResolution();
+  _resolution = _costmap->getResolution();
+  _originX = _costmap->getOriginX();
+  _originY = _costmap->getOriginY();
+
+  ROS_INFO("MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
+           _mapSizeX,_mapSizeY,_resolution,_originX,_originY);
 
   ROS_INFO("RRT Planner initialized!!");
-
+  _initialized = true;
 }
 
 bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& plan) {
+  if (!_initialized) {
+    ROS_ERROR(
+        "The planner has not been initialized, please call initialize() to use the planner");
+    return false;
+  }
+
+  ROS_INFO("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f", start.pose.position.x, start.pose.position.y,
+            goal.pose.position.x, goal.pose.position.y);
+
+
+  if (goal.header.frame_id != _costmapROS->getGlobalFrameID())
+  {
+    ROS_ERROR("This planner as configured will only accept goals in the %s frame, but a goal was sent in the %s frame.",
+              _costmapROS->getGlobalFrameID().c_str(), goal.header.frame_id.c_str());
+    return false;
+}
+
   plan.clear();
   _plan.clear();
 
@@ -58,10 +80,29 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   int iNear;
   geometry_msgs::PoseStamped qRand;
 
-  _sampleRange = 2;
   _start = start;
   _goal = goal;
   _plan = plan;
+
+  // Converting start and goal nodes to Map Coordinates
+  double startMapX = _start.pose.position.x;
+  double startMapY = _start.pose.position.y;
+  double goalMapX = _goal.pose.position.x;
+  double goalMapY = _goal.pose.position.y;
+
+  ROS_INFO("Start Rviz (%f, %f) - Goal Rviz (%f, %f)",
+           startMapX,startMapY,goalMapX,goalMapY);
+
+  rviz_map(startMapX, startMapY);
+  rviz_map(goalMapX, goalMapY);
+
+  ROS_INFO("Start Map (%f, %f) - Goal Map (%f, %f)",
+           startMapX,startMapY,goalMapX,goalMapY);
+
+  _start.pose.position.x = startMapX;
+  _start.pose.position.y = startMapY;
+  _goal.pose.position.x = goalMapX;
+  _goal.pose.position.y = goalMapY;
 
   ROS_INFO("Making Navigation Plan!");
 
@@ -79,15 +120,12 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     ROS_INFO("New Iteration");
     // Get Random Pose
     qRand = rand_config();
-    ROS_INFO("Back Here");
 
     // Find nearest Vertex in tree
     iNear = nearest_vertex(qRand);
-    ROS_INFO("Back Here");
 
     // Check if path is safe
     safe = path_safe(qRand, iNear);
-    ROS_INFO("Back Here");
 
     // If path is safe add node to tree
     if (safe == true) {
@@ -109,6 +147,7 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   }
   plan = _plan;
   ROS_INFO("Plan Created");
+  ROS_INFO("Plan Length = %d", plan.size());
   return done;
 }
 
@@ -117,7 +156,6 @@ geometry_msgs::PoseStamped RRTPlanner::rand_config() {
 
   geometry_msgs::PoseStamped randPose;
   bool found = false;
-  srand(time(NULL));
   int randX;
   int randY;
   double worldX = 0;
@@ -134,17 +172,17 @@ geometry_msgs::PoseStamped RRTPlanner::rand_config() {
     if (_costmap->getCost(randX, randY) == costmap_2d::FREE_SPACE) {
       found = true;
 
-      _costmap->mapToWorld(randX, randY, worldXRef, worldYRef);
+      //_costmap->mapToWorld(randX, randY, worldXRef, worldYRef);
 
       // Set Arbitrary Orientation
-      randPose.pose.position.x = worldX;
-      randPose.pose.position.y = worldY;
+      randPose.pose.position.x = randX;
+      randPose.pose.position.y = randY;
       randPose.pose.position.z = 0;
 
       randPose.pose.orientation.x = 0;
       randPose.pose.orientation.y = 0;
       randPose.pose.orientation.z = 0;
-      randPose.pose.orientation.w = 0;
+      randPose.pose.orientation.w = 1;
 
     } else {
       found = false;
@@ -175,7 +213,8 @@ int RRTPlanner::nearest_vertex(geometry_msgs::PoseStamped qRand) {
       iNear = _treeGraph[node].myIndex;
     }
   }
-  ROS_INFO("Nearest Vertex in tree found");
+  ROS_INFO("Nearest Vertex in tree found (%d, %d)",
+           _treeGraph[iNear].q.pose.position.x, _treeGraph[iNear].q.pose.position.y);
   return iNear;
 }
 
@@ -191,19 +230,24 @@ bool RRTPlanner::path_safe(geometry_msgs::PoseStamped qRand, int iNear) {
   double y;
   unsigned int xCell = 0;
   unsigned int yCell = 0;
-  unsigned int & xCellRef = xCell;
-  unsigned int & yCellRef = yCell;
+//  unsigned int & xCellRef = xCell;
+//  unsigned int & yCellRef = yCell;
   bool free = true;
 
   double xMax = std::max(x1, x2);
   double xMin = std::min(x1, x2);
 
-  for (double x = xMin; x < xMax; x++) {
+  for (double x = xMin; x <= xMax; x++) {
+    xCell = (int)round(x);
     y = m * x + b;
-    ROS_INFO("Points On Path: X = %d, Y = %d", x, y);
-    _costmap->worldToMap(x, y, xCellRef, yCellRef);
-    ROS_INFO("Cells On Path: X = %d, Y = %d", xCell, yCell);
-    if (_costmap->getCost(xCell, yCell) == costmap_2d::LETHAL_OBSTACLE) {
+    yCell = (int)round(y);
+
+    ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell*_resolution), (yCell*_resolution));
+
+    unsigned char cost = _costmap->getCost(xCell, yCell);
+    ROS_INFO("COST = %d", cost);
+    if (cost != 0) {
       free = false;
       ROS_INFO("Path is not safe");
       break;
@@ -224,8 +268,8 @@ bool RRTPlanner::check_goal(geometry_msgs::PoseStamped qNew, int iNew) {
   double y;
   unsigned int xCell = 0;
   unsigned int yCell = 0;
-  unsigned int & xCellRef = xCell;
-  unsigned int & yCellRef = yCell;
+//  unsigned int & xCellRef = xCell;
+//  unsigned int & yCellRef = yCell;
   bool free = true;
 
   double xMax = std::max(x1, x2);
@@ -233,8 +277,15 @@ bool RRTPlanner::check_goal(geometry_msgs::PoseStamped qNew, int iNew) {
 
   for (double x = xMin; x < xMax; x++) {
     y = m * x + b;
-    _costmap->worldToMap(x, y, xCellRef, yCellRef);
-    if (_costmap->getCost(xCell, yCell) == costmap_2d::LETHAL_OBSTACLE) {
+    xCell = (int)round(x);
+    yCell = (int)round(y);
+
+    ROS_INFO("Points On Goal Path: X = %d, Y = %d", xCell, yCell);
+    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell*_resolution), (yCell*_resolution));
+
+    unsigned char cost = _costmap->getCost(xCell, yCell);
+    ROS_INFO("COST = %d", cost);
+    if (cost != 0) {
       free = false;
       break;
     }
@@ -253,6 +304,7 @@ bool RRTPlanner::check_goal(geometry_msgs::PoseStamped qNew, int iNew) {
 // If goal has been reached build plan
 bool RRTPlanner::build_plan() {
 // Start at goal and add pose and then move to its neighbor pose
+  ROS_INFO("Building Plan");
   qTree qAdd = _treeGraph.back();
   double nearI;
 
@@ -264,8 +316,23 @@ bool RRTPlanner::build_plan() {
     nearI = qAdd.nearIndex;
     qAdd = _treeGraph[nearI];
   }
+  // Add start
+  _plan.insert(_plan.begin(),_start);
+
+  for (int i = 0; i < _plan.size(); i++) {
+    map_rviz(_plan[i].pose.position.x, _plan[i].pose.position.y);
+  }
   ROS_INFO("Built Plan");
   return true;
+}
+
+void RRTPlanner::rviz_map(double& x, double& y) {
+  x = (x-_originX)/_resolution;
+  y = (y-_originY)/_resolution;
+}
+void RRTPlanner::map_rviz(double& x, double& y) {
+  x = x*_resolution+_originX;
+  y = y*_resolution+_originY;
 }
 
 RRTPlanner::~RRTPlanner() {
