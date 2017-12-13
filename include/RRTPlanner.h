@@ -23,6 +23,8 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   RRTPlanner();
   RRTPlanner(std::string name, costmap_2d::Costmap2DROS* costmapRos);
   void initialize(std::string name, costmap_2d::Costmap2DROS* costmapRos);
+  void initialize(std::string name, int mapSizeX, int mapSizeY, float resolution, float originX,
+                  float originY, costmap_2d::Costmap2DROS map);
   bool makePlan(const geometry_msgs::PoseStamped& start,
                 const geometry_msgs::PoseStamped& goal,
                 std::vector<geometry_msgs::PoseStamped>& plan);

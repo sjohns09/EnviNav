@@ -21,8 +21,6 @@
 PLUGINLIB_EXPORT_CLASS(RRTPlanner, nav_core::BaseGlobalPlanner)
 
 RRTPlanner::RRTPlanner() {
-  ROS_ERROR("Need to call constructor with name and costmap");
-
 }
 
 RRTPlanner::RRTPlanner(std::string name, costmap_2d::Costmap2DROS* costmapRos) {
@@ -44,11 +42,41 @@ void RRTPlanner::initialize(std::string name,
   _originX = _costmap->getOriginX();
   _originY = _costmap->getOriginY();
 
-  ROS_INFO("MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
-           _mapSizeX,_mapSizeY,_resolution,_originX,_originY);
+  ROS_INFO(
+      "MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
+      _mapSizeX, _mapSizeY, _resolution, _originX, _originY);
 
   ROS_INFO("RRT Planner initialized!!");
   _initialized = true;
+}
+
+void RRTPlanner::initialize(std::string name, int mapSizeX, int mapSizeY, float resolution,
+                            float originX, float originY,
+                            costmap_2d::Costmap2DROS map) {
+  _mapSizeX = mapSizeX;
+  _mapSizeY = mapSizeY;
+  _resolution = resolution;
+  _originX = originX;
+  _originY = originY;
+  _costmap = map.getCostmap();
+
+  ros::NodeHandle private_nh("~/" + name);
+  // private_nh.param("step_size", _stepSize, _costmap->getResolution());
+
+  _mapSizeX = _costmap->getSizeInCellsX();
+  _mapSizeY = _costmap->getSizeInCellsY();
+  _resolution = _costmap->getResolution();
+  _originX = _costmap->getOriginX();
+  _originY = _costmap->getOriginY();
+
+  ROS_INFO(
+      "MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
+      _mapSizeX, _mapSizeY, _resolution, _originX, _originY);
+
+  ROS_INFO("RRT Planner initialized!!");
+  _initialized = true;
+
+
 }
 
 bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
@@ -60,16 +88,16 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     return false;
   }
 
-  ROS_INFO("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f", start.pose.position.x, start.pose.position.y,
-            goal.pose.position.x, goal.pose.position.y);
+  ROS_INFO("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f",
+           start.pose.position.x, start.pose.position.y, goal.pose.position.x,
+           goal.pose.position.y);
 
-
-  if (goal.header.frame_id != _costmapROS->getGlobalFrameID())
-  {
-    ROS_ERROR("This planner as configured will only accept goals in the %s frame, but a goal was sent in the %s frame.",
-              _costmapROS->getGlobalFrameID().c_str(), goal.header.frame_id.c_str());
+  if (goal.header.frame_id != _costmapROS->getGlobalFrameID()) {
+    ROS_ERROR(
+        "This planner as configured will only accept goals in the %s frame, but a goal was sent in the %s frame.",
+        _costmapROS->getGlobalFrameID().c_str(), goal.header.frame_id.c_str());
     return false;
-}
+  }
 
   plan.clear();
   _plan.clear();
@@ -90,14 +118,14 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   double goalMapX = _goal.pose.position.x;
   double goalMapY = _goal.pose.position.y;
 
-  ROS_INFO("Start Rviz (%f, %f) - Goal Rviz (%f, %f)",
-           startMapX,startMapY,goalMapX,goalMapY);
+  ROS_INFO("Start Rviz (%f, %f) - Goal Rviz (%f, %f)", startMapX, startMapY,
+           goalMapX, goalMapY);
 
   rviz_map(startMapX, startMapY);
   rviz_map(goalMapX, goalMapY);
 
-  ROS_INFO("Start Map (%f, %f) - Goal Map (%f, %f)",
-           startMapX,startMapY,goalMapX,goalMapY);
+  ROS_INFO("Start Map (%f, %f) - Goal Map (%f, %f)", startMapX, startMapY,
+           goalMapX, goalMapY);
 
   _start.pose.position.x = startMapX;
   _start.pose.position.y = startMapY;
@@ -214,7 +242,8 @@ int RRTPlanner::nearest_vertex(geometry_msgs::PoseStamped qRand) {
     }
   }
   ROS_INFO("Nearest Vertex in tree found (%d, %d)",
-           _treeGraph[iNear].q.pose.position.x, _treeGraph[iNear].q.pose.position.y);
+           _treeGraph[iNear].q.pose.position.x,
+           _treeGraph[iNear].q.pose.position.y);
   return iNear;
 }
 
@@ -238,12 +267,13 @@ bool RRTPlanner::path_safe(geometry_msgs::PoseStamped qRand, int iNear) {
   double xMin = std::min(x1, x2);
 
   for (double x = xMin; x <= xMax; x++) {
-    xCell = (int)round(x);
+    xCell = (int) round(x);
     y = m * x + b;
-    yCell = (int)round(y);
+    yCell = (int) round(y);
 
     ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
-    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell*_resolution), (yCell*_resolution));
+    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+             (yCell * _resolution));
 
     unsigned char cost = _costmap->getCost(xCell, yCell);
     ROS_INFO("COST = %d", cost);
@@ -277,11 +307,12 @@ bool RRTPlanner::check_goal(geometry_msgs::PoseStamped qNew, int iNew) {
 
   for (double x = xMin; x < xMax; x++) {
     y = m * x + b;
-    xCell = (int)round(x);
-    yCell = (int)round(y);
+    xCell = (int) round(x);
+    yCell = (int) round(y);
 
     ROS_INFO("Points On Goal Path: X = %d, Y = %d", xCell, yCell);
-    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell*_resolution), (yCell*_resolution));
+    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+             (yCell * _resolution));
 
     unsigned char cost = _costmap->getCost(xCell, yCell);
     ROS_INFO("COST = %d", cost);
@@ -317,7 +348,7 @@ bool RRTPlanner::build_plan() {
     qAdd = _treeGraph[nearI];
   }
   // Add start
-  _plan.insert(_plan.begin(),_start);
+  _plan.insert(_plan.begin(), _start);
 
   for (int i = 0; i < _plan.size(); i++) {
     map_rviz(_plan[i].pose.position.x, _plan[i].pose.position.y);
@@ -327,12 +358,12 @@ bool RRTPlanner::build_plan() {
 }
 
 void RRTPlanner::rviz_map(double& x, double& y) {
-  x = (x-_originX)/_resolution;
-  y = (y-_originY)/_resolution;
+  x = (x - _originX) / _resolution;
+  y = (y - _originY) / _resolution;
 }
 void RRTPlanner::map_rviz(double& x, double& y) {
-  x = x*_resolution+_originX;
-  y = y*_resolution+_originY;
+  x = x * _resolution + _originX;
+  y = y * _resolution + _originY;
 }
 
 RRTPlanner::~RRTPlanner() {

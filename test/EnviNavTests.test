@@ -1,0 +1,23 @@
+<launch>
+	<node 
+  		pkg="envi_nav" 
+  		type="RRTPlanner" 
+  		name="RRTPlanner"
+  		required="true" 
+  	/>
+  	<node 
+		pkg="envi_nav" 
+		type="MapBuild" 
+		name="MapBuild"
+	/>
+  	<test 
+  		test-name="RRTPlanner_test" 
+  		pkg="envi_nav" 
+  		type="RRTPlanner_test" 
+  	/>
+  	<test 
+  		test-name="MapBuild_test" 
+  		pkg="envi_nav" 
+  		type="MapBuild_test" 
+  	/>
+</launch>

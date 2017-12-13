@@ -201,3 +201,10 @@ add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+if(CATKIN_ENABLE_TESTING)
+	find_package(rostest REQUIRED)
+	add_rostest_gtest(EnviNavTests test/EnviNavTests.test test/RRTPlanner_test.cpp test/MapBuild_test.cpp)
+	target_link_libraries(EnviNavTests ${catkin_LIBRARIES})
+	add_dependencies(EnviNavTests envi_nav_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+endif()
