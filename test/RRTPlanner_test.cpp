@@ -90,6 +90,9 @@ TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
   EXPECT_EQ(goalPlan.pose.position.y, givenGoal.pose.position.y);
 }
 
+/**
+* @test Verifies that all nodes in plan are in free space
+*/
 TEST(RRTPlanner_test, testPlannerDoesNotCauseCollisions) {
   ros::NodeHandle node;
 
