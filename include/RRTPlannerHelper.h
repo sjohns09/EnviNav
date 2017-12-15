@@ -18,10 +18,9 @@
 
 class RRTPlannerHelper {
  public:
-  RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int& mapX, int& mapY,
-                   float& resolution, float& originX, float& originY,
-                   const geometry_msgs::PoseStamped& goal, const geometry_msgs::PoseStamped& start);
-  virtual ~RRTPlannerHelper();
+  RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int mapX, int mapY,
+                   float resolution, float originX, float originY,
+                   const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start);
 
   /**
    * @struct qTree

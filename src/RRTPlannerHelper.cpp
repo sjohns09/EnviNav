@@ -17,10 +17,10 @@
 #include <pluginlib/class_list_macros.h>
 #include "RRTPlannerHelper.h"
 
-RRTPlannerHelper::RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int& mapX,
-                                   int& mapY, float& resolution, float& originX,
-                                   float& originY,
-                                   const geometry_msgs::PoseStamped& goal, const geometry_msgs::PoseStamped& start) {
+RRTPlannerHelper::RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int mapX,
+                                   int mapY, float resolution, float originX,
+                                   float originY,
+                                   const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start) {
   _mapSizeX = mapX;
   _mapSizeY = mapY;
   _resolution = resolution;
@@ -349,9 +349,5 @@ void RRTPlannerHelper::rviz_map(double& x, double& y) {
 void RRTPlannerHelper::map_rviz(double& x, double& y) {
   x = x * _resolution + _originX;
   y = y * _resolution + _originY;
-}
-
-RRTPlannerHelper::~RRTPlannerHelper() {
-  // TODO Auto-generated destructor stub
 }
 

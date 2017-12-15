@@ -36,7 +36,6 @@
  * to the navigation stack
  */
 
-#include "RRTPlanner.h"
 #include <gtest/gtest.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
@@ -46,13 +45,78 @@
 #include <pluginlib/class_loader.h>
 #include <nav_core/base_global_planner.h>
 #include "ros/ros.h"
+#include "RRTPlannerHelper.h"
 
 /**
-* @test Verifies that the start and goal points and the first and last poses in the plan
-*/
-TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
-  //ros::NodeHandle node;
-  // Launch the map server node
+ * @test Verifies that the start and goal points and the first and last poses in the plan
+ */
+// TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
+//ros::NodeHandle node;
+// Launch the map server node
+//  geometry_msgs::PoseStamped givenStartFill;
+//  geometry_msgs::PoseStamped givenGoalFill;
+//
+//  givenStartFill.pose.position.x = 1;
+//  givenStartFill.pose.position.y = 1;
+//  givenStartFill.pose.position.z = 0;
+//  givenStartFill.pose.orientation.x = 0;
+//  givenStartFill.pose.orientation.y = 0;
+//  givenStartFill.pose.orientation.z = 0;
+//  givenStartFill.pose.orientation.w = 1;
+//
+//  givenGoalFill.pose.position.x = 3;
+//  givenGoalFill.pose.position.y = 3;
+//  givenGoalFill.pose.position.z = 0;
+//  givenGoalFill.pose.orientation.x = 0;
+//  givenGoalFill.pose.orientation.y = 0;
+//  givenGoalFill.pose.orientation.z = 0;
+//  givenGoalFill.pose.orientation.w = 1;
+//
+//  //This variable holds the final plan in the global planner when called
+//  const geometry_msgs::PoseStamped& givenStart = givenStartFill;
+//  const geometry_msgs::PoseStamped& givenGoal = givenGoalFill;
+//
+//  std::vector<geometry_msgs::PoseStamped> _plan;
+//  std::vector<geometry_msgs::PoseStamped>& plan = _plan;
+//
+//
+//  // Need to call planner here
+//  tf::TransformListener tf(ros::Duration(10));
+//  costmap_2d::Costmap2DROS* costmap = new costmap_2d::Costmap2DROS("my_costmap", tf);
+//  pluginlib::ClassLoader<nav_core::BaseGlobalPlanner> rrt("nav_core", "nav_core::BaseGlobalPlanner");
+//
+//  ROS_INFO("Calling RRT Plugin");
+//  boost::shared_ptr<nav_core::BaseGlobalPlanner> planner = rrt.createInstance("nav_core/RRTPlanner");
+//  ROS_INFO("Initializing");
+//  planner->initialize("RRTPlanner", costmap);
+//  ROS_INFO("Make Plan");
+//  planner->makePlan(givenStart, givenGoal, plan);
+//  // ------
+//
+//  geometry_msgs::PoseStamped startPlan = plan.front();
+//  geometry_msgs::PoseStamped goalPlan = plan.back();
+//
+//  EXPECT_EQ(startPlan.pose.position.x, givenStart.pose.position.x);
+//  EXPECT_EQ(startPlan.pose.position.y, givenStart.pose.position.y);
+//  EXPECT_EQ(goalPlan.pose.position.x, givenGoal.pose.position.x);
+//  EXPECT_EQ(goalPlan.pose.position.y, givenGoal.pose.position.y);
+//}
+/**
+ * @test Verifies that all nodes in plan are in free space
+ */
+TEST(RRTPlanner_test, testRandomNodeReturnedInMap) {
+  ros::NodeHandle node;
+
+  tf::TransformListener tf(ros::Duration(10));
+  costmap_2d::Costmap2DROS* costmapRos = new costmap_2d::Costmap2DROS(
+      "test_costmap", tf);
+  costmap_2d::Costmap2D* _costmap = costmapRos->getCostmap();
+
+  int _mapSizeX = 10;
+  int _mapSizeY = 10;
+  float _resolution = 1;
+  float _originX = 0;
+  float _originY = 0;
 
   geometry_msgs::PoseStamped givenStartFill;
   geometry_msgs::PoseStamped givenGoalFill;
@@ -73,49 +137,20 @@ TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
   givenGoalFill.pose.orientation.z = 0;
   givenGoalFill.pose.orientation.w = 1;
 
-  //This variable holds the final plan in the global planner when called
-  const geometry_msgs::PoseStamped& givenStart = givenStartFill;
-  const geometry_msgs::PoseStamped& givenGoal = givenGoalFill;
+  const geometry_msgs::PoseStamped& _goal = givenGoalFill;
+  const geometry_msgs::PoseStamped& _start = givenStartFill;
 
-  std::vector<geometry_msgs::PoseStamped> _plan;
-  std::vector<geometry_msgs::PoseStamped>& plan = _plan;
+  RRTPlannerHelper helper(_costmap, _mapSizeX, _mapSizeY, _resolution, _originX,
+                          _originY, _goal, _start);
 
+  geometry_msgs::PoseStamped rand = helper.rand_config();
 
-  // Need to call planner here
-  tf::TransformListener tf(ros::Duration(10));
-  costmap_2d::Costmap2DROS* costmap = new costmap_2d::Costmap2DROS("my_costmap", tf);
-  pluginlib::ClassLoader<nav_core::BaseGlobalPlanner> rrt("nav_core", "nav_core::BaseGlobalPlanner");
-
-  ROS_INFO("Calling RRT Plugin");
-  boost::shared_ptr<nav_core::BaseGlobalPlanner> planner = rrt.createInstance("nav_core/RRTPlanner");
-  ROS_INFO("Initializing");
-  planner->initialize("RRTPlanner", costmap);
-  ROS_INFO("Make Plan");
-  planner->makePlan(givenStart, givenGoal, plan);
-  // ------
-
-  geometry_msgs::PoseStamped startPlan = plan.front();
-  geometry_msgs::PoseStamped goalPlan = plan.back();
-
-  EXPECT_EQ(startPlan.pose.position.x, givenStart.pose.position.x);
-  EXPECT_EQ(startPlan.pose.position.y, givenStart.pose.position.y);
-  EXPECT_EQ(goalPlan.pose.position.x, givenGoal.pose.position.x);
-  EXPECT_EQ(goalPlan.pose.position.y, givenGoal.pose.position.y);
-}
-
-/**
-* @test Verifies that all nodes in plan are in free space
-*/
-TEST(RRTPlanner_test, testPlannerDoesNotCauseCollisions) {
-  //ros::NodeHandle node;
-
-  // Check to make sure every cell in plan is free?
-
-  EXPECT_EQ("", "");
+  EXPECT_LE(rand.pose.position.x, _mapSizeX);
+  EXPECT_LE(rand.pose.position.y, _mapSizeY);
 }
 
 TEST(RRTPlanner_test, test) {
-  //ros::NodeHandle node;
+  ros::NodeHandle node;
 
   EXPECT_EQ("", "");
 }

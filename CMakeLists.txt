@@ -206,6 +206,6 @@ add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp src/RRTPlannerHelper.cp
 if(CATKIN_ENABLE_TESTING)
 	find_package(rostest REQUIRED)
 	add_rostest_gtest(EnviNavTests test/EnviNavTests.test test/EnviNavTests.cpp)
-	target_link_libraries(EnviNavTests ${catkin_LIBRARIES})
+	target_link_libraries(EnviNavTests envi_nav ${catkin_LIBRARIES})
 	add_dependencies(EnviNavTests envi_nav_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 endif()
