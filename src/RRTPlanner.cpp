@@ -102,7 +102,7 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
   std::vector<RRTPlannerHelper::qTree> treeGraph;
   RRTPlannerHelper helper(costmap, mapSizeX, mapSizeY, resolution,
-                                originX, originY, goal);
+                                originX, originY, goal, start);
 
   plan.clear();
 

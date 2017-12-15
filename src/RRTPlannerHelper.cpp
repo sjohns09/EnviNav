@@ -17,15 +17,40 @@
 #include <pluginlib/class_list_macros.h>
 #include "RRTPlannerHelper.h"
 
-RRTPlannerHelper::RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int& mapX, int& mapY, float& resolution, float& originX,
-                                   float& originY, const geometry_msgs::PoseStamped& goal) {
+RRTPlannerHelper::RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int& mapX,
+                                   int& mapY, float& resolution, float& originX,
+                                   float& originY,
+                                   const geometry_msgs::PoseStamped& goal, const geometry_msgs::PoseStamped& start) {
   _mapSizeX = mapX;
   _mapSizeY = mapY;
   _resolution = resolution;
   _originX = originX;
   _originY = originY;
-  _allowedDist = 100;
   _costmap = costmap;
+  _goal = goal;
+  _start = start;
+
+  _allowedDist = 100;
+
+  // Converting start and goal nodes to Map Coordinates
+    double startMapX = _start.pose.position.x;
+    double startMapY = _start.pose.position.y;
+    double goalMapX = _goal.pose.position.x;
+    double goalMapY = _goal.pose.position.y;
+
+    ROS_INFO("Start Rviz (%f, %f) - Goal Rviz (%f, %f)", startMapX, startMapY,
+             goalMapX, goalMapY);
+
+    rviz_map(startMapX, startMapY);
+    rviz_map(goalMapX, goalMapY);
+
+    ROS_INFO("Start Map (%f, %f) - Goal Map (%f, %f)", startMapX, startMapY,
+             goalMapX, goalMapY);
+
+    _start.pose.position.x = startMapX;
+    _start.pose.position.y = startMapY;
+    _goal.pose.position.x = goalMapX;
+    _goal.pose.position.y = goalMapY;
 }
 
 // Get rand x,y in free space of costmap
@@ -66,7 +91,8 @@ geometry_msgs::PoseStamped RRTPlannerHelper::rand_config() {
 }
 
 // Get nearest vertex on tree - Euclidean
-int RRTPlannerHelper::nearest_vertex(geometry_msgs::PoseStamped qRand, std::vector<qTree> _treeGraph) {
+int RRTPlannerHelper::nearest_vertex(geometry_msgs::PoseStamped qRand,
+                                     std::vector<qTree> _treeGraph) {
   ROS_INFO("Looking for Nearest Vertex in tree");
   int iNear = 0;
   double minDist = 1000;
@@ -99,14 +125,13 @@ int RRTPlannerHelper::nearest_vertex(geometry_msgs::PoseStamped qRand, std::vect
 }
 
 // Determine if path is safe
-bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear, std::vector<qTree> _treeGraph) {
+bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear,
+                                 std::vector<qTree> _treeGraph) {
   ROS_INFO("Checking Path");
   double x2 = _treeGraph[iNear].q.pose.position.x;
   double y2 = _treeGraph[iNear].q.pose.position.y;
   double x1 = qRand.pose.position.x;
   double y1 = qRand.pose.position.y;
-  double m = (y2 - y1) / (x2 - x1);
-  double b = y1 - (m * x1);
   double y, x;
   unsigned int xCell;
   unsigned int yCell;
@@ -117,6 +142,8 @@ bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear, st
   }
 
   if (x1 != x2) {
+    double m = (y2 - y1) / (x2 - x1);
+    double b = y1 - (m * x1);
     double xMax = std::max(x1, x2);
     double xMin = std::min(x1, x2);
 
@@ -143,21 +170,42 @@ bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear, st
     double yMax = std::max(y1, y2);
     double yMin = std::min(y1, y2);
 
-    for (double y = yMin; y <= yMax; y++) {
-      yCell = (int) round(y);
-      x = (y - b) / m;
-      xCell = (int) round(x);
+    if (x1 == x2) {
+      for (double y = yMin; y <= yMax; y++) {
+        yCell = (int) round(y);
+        xCell = (int) round(x1);
 
-      ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
-      ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
-               (yCell * _resolution));
+        ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+        ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+                 (yCell * _resolution));
 
-      unsigned char yCost = _costmap->getCost(xCell, yCell);
-      ROS_INFO("COST = %d", yCost);
-      if (yCost != 0) {
-        free = false;
-        ROS_INFO("Path is not safe");
-        return free;
+        unsigned char yCost = _costmap->getCost(xCell, yCell);
+        ROS_INFO("COST = %d", yCost);
+        if (yCost != 0) {
+          free = false;
+          ROS_INFO("Path is not safe");
+          return free;
+        }
+      }
+    } else {
+      double m = (y2 - y1) / (x2 - x1);
+      double b = y1 - (m * x1);
+      for (double y = yMin; y <= yMax; y++) {
+        yCell = (int) round(y);
+        x = (y - b) / m;
+        xCell = (int) round(x);
+
+        ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+        ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+                 (yCell * _resolution));
+
+        unsigned char yCost = _costmap->getCost(xCell, yCell);
+        ROS_INFO("COST = %d", yCost);
+        if (yCost != 0) {
+          free = false;
+          ROS_INFO("Path is not safe");
+          return free;
+        }
       }
     }
   }
@@ -174,7 +222,7 @@ bool RRTPlannerHelper::check_goal(geometry_msgs::PoseStamped qNew) {
   double dist = sqrt((pow(xDif, 2)) + (pow(yDif, 2)));
 
   if (dist > _allowedDist) {
-    ROS_INFO("Goal too far");
+    ROS_INFO("Goal too far: %f", dist);
     return false;
   }
 
@@ -219,34 +267,60 @@ bool RRTPlannerHelper::check_goal(geometry_msgs::PoseStamped qNew) {
   }
 
   if (y1 != y2) {
-    double yMax = std::max(y1, y2);
-    double yMin = std::min(y1, y2);
+      if (x1 == x2) {
+        double yMax = std::max(y1, y2);
+        double yMin = std::min(y1, y2);
 
-    for (double y = yMin; y <= yMax; y++) {
-      yCell = (int) round(y);
-      x = (y - b) / m;
-      xCell = (int) round(x);
+        for (double y = yMin; y <= yMax; y++) {
+          yCell = (int) round(y);
+          xCell = (int) round(x1);
 
-      ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
-      ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
-               (yCell * _resolution));
+          ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+          ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+                   (yCell * _resolution));
 
-      unsigned char yCost = _costmap->getCost(xCell, yCell);
-      ROS_INFO("COST = %d", yCost);
-      if (yCost != 0) {
-        free = false;
-        ROS_INFO("Path is not safe");
-        return free;
+          unsigned char yCost = _costmap->getCost(xCell, yCell);
+          ROS_INFO("COST = %d", yCost);
+          if (yCost != 0) {
+            free = false;
+            ROS_INFO("Path is not safe");
+            return free;
+          }
+        }
+      } else {
+        double m = (y2 - y1) / (x2 - x1);
+        double b = y1 - (m * x1);
+        double yMax = std::max(y1, y2);
+        double yMin = std::min(y1, y2);
+
+        for (double y = yMin; y <= yMax; y++) {
+          yCell = (int) round(y);
+          x = (y - b) / m;
+          xCell = (int) round(x);
+
+          ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+          ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+                   (yCell * _resolution));
+
+          unsigned char yCost = _costmap->getCost(xCell, yCell);
+          ROS_INFO("COST = %d", yCost);
+          if (yCost != 0) {
+            free = false;
+            ROS_INFO("Path is not safe");
+            return free;
+          }
+        }
       }
     }
-  }
   return free;
 }
 
 // If goal has been reached build plan
-std::vector<geometry_msgs::PoseStamped> RRTPlannerHelper::build_plan(std::vector<qTree> _treeGraph) {
+std::vector<geometry_msgs::PoseStamped> RRTPlannerHelper::build_plan(
+    std::vector<qTree> _treeGraph) {
 // Start at goal and add pose and then move to its neighbor pose
   ROS_INFO("Building Plan");
+  _plan.clear();
   qTree qAdd = _treeGraph.back();
   double nearI;
 
