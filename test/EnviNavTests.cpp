@@ -156,7 +156,7 @@ TEST(RRTPlanner_test, test) {
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "RRTPlanner_test");
+  ros::init(argc, argv, "EnviNavTests");
 
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
