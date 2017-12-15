@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   sensor_msgs
+  tf
   nav_core
   costmap_2d
   base_local_planner
@@ -127,7 +128,7 @@ target_link_libraries(mapping_demo envi_nav ${catkin_LIBRARIES})
 add_dependencies(mapping_demo envi_nav_generate_messages_cpp)
 
 ## Declare a C++ library
-add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp)
+add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp src/RRTPlannerHelper.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -204,7 +205,7 @@ add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp)
 
 if(CATKIN_ENABLE_TESTING)
 	find_package(rostest REQUIRED)
-	add_rostest_gtest(EnviNavTests test/EnviNavTests.test test/RRTPlanner_test.cpp test/MapBuild_test.cpp)
+	add_rostest_gtest(EnviNavTests test/EnviNavTests.test test/EnviNavTests.cpp)
 	target_link_libraries(EnviNavTests ${catkin_LIBRARIES})
 	add_dependencies(EnviNavTests envi_nav_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 endif()

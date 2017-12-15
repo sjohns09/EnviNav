@@ -1,4 +1,4 @@
-/** @file RRTPlanner_test.cpp
+/** @file EnviNavTests.cpp
  * @brief Test for RRTPlanner plugin
  *
  * @author Samantha Johnson
@@ -40,9 +40,12 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
+#include <costmap_2d/costmap_2d.h>
+#include <costmap_2d/costmap_2d_ros.h>
+#include <tf/transform_listener.h>
+#include <pluginlib/class_loader.h>
+#include <nav_core/base_global_planner.h>
 #include "ros/ros.h"
-
-// Inject all of the needed variables into the initializer and call the separate functions
 
 /**
 * @test Verifies that the start and goal points and the first and last poses in the plan
@@ -51,34 +54,44 @@ TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
   //ros::NodeHandle node;
   // Launch the map server node
 
+  geometry_msgs::PoseStamped givenStartFill;
+  geometry_msgs::PoseStamped givenGoalFill;
+
+  givenStartFill.pose.position.x = 1;
+  givenStartFill.pose.position.y = 1;
+  givenStartFill.pose.position.z = 0;
+  givenStartFill.pose.orientation.x = 0;
+  givenStartFill.pose.orientation.y = 0;
+  givenStartFill.pose.orientation.z = 0;
+  givenStartFill.pose.orientation.w = 1;
+
+  givenGoalFill.pose.position.x = 3;
+  givenGoalFill.pose.position.y = 3;
+  givenGoalFill.pose.position.z = 0;
+  givenGoalFill.pose.orientation.x = 0;
+  givenGoalFill.pose.orientation.y = 0;
+  givenGoalFill.pose.orientation.z = 0;
+  givenGoalFill.pose.orientation.w = 1;
+
   //This variable holds the final plan in the global planner when called
-  std::vector<geometry_msgs::PoseStamped>& plan = {};
-  geometry_msgs::PoseStamped givenStart;
-  geometry_msgs::PoseStamped givenGoal;
+  const geometry_msgs::PoseStamped& givenStart = givenStartFill;
+  const geometry_msgs::PoseStamped& givenGoal = givenGoalFill;
 
-  givenStart.pose.position.x = 1;
-  givenStart.pose.position.y = 1;
-  givenStart.pose.position.z = 0;
-  givenStart.pose.orientation.x = 0;
-  givenStart.pose.orientation.y = 0;
-  givenStart.pose.orientation.z = 0;
-  givenStart.pose.orientation.w = 1;
+  std::vector<geometry_msgs::PoseStamped> _plan;
+  std::vector<geometry_msgs::PoseStamped>& plan = _plan;
 
-  givenGoal.pose.position.x = 3;
-  givenGoal.pose.position.y = 3;
-  givenGoal.pose.position.z = 0;
-  givenGoal.pose.orientation.x = 0;
-  givenGoal.pose.orientation.y = 0;
-  givenGoal.pose.orientation.z = 0;
-  givenGoal.pose.orientation.w = 1;
 
   // Need to call planner here
-  tf::TransformListener tf;
-  costmap_2d::Costmap2DROS* costmap = new costmap_2d::Costmap2DROS(
-      "test_costmap", tf);
-  RRTPlanner planner = new RRTPlanner("rrt_planner", costmap);
-  planner.initialize("rrt_planner", costmap);
-  planner.makePlan(givenStart, givenGoal, plan);
+  tf::TransformListener tf(ros::Duration(10));
+  costmap_2d::Costmap2DROS* costmap = new costmap_2d::Costmap2DROS("my_costmap", tf);
+  pluginlib::ClassLoader<nav_core::BaseGlobalPlanner> rrt("nav_core", "nav_core::BaseGlobalPlanner");
+
+  ROS_INFO("Calling RRT Plugin");
+  boost::shared_ptr<nav_core::BaseGlobalPlanner> planner = rrt.createInstance("nav_core/RRTPlanner");
+  ROS_INFO("Initializing");
+  planner->initialize("RRTPlanner", costmap);
+  ROS_INFO("Make Plan");
+  planner->makePlan(givenStart, givenGoal, plan);
   // ------
 
   geometry_msgs::PoseStamped startPlan = plan.front();
@@ -94,7 +107,7 @@ TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
 * @test Verifies that all nodes in plan are in free space
 */
 TEST(RRTPlanner_test, testPlannerDoesNotCauseCollisions) {
-  ros::NodeHandle node;
+  //ros::NodeHandle node;
 
   // Check to make sure every cell in plan is free?
 
@@ -102,7 +115,7 @@ TEST(RRTPlanner_test, testPlannerDoesNotCauseCollisions) {
 }
 
 TEST(RRTPlanner_test, test) {
-  ros::NodeHandle node;
+  //ros::NodeHandle node;
 
   EXPECT_EQ("", "");
 }

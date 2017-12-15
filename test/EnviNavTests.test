@@ -1,23 +1,12 @@
 <launch>
-	<node 
-  		pkg="envi_nav" 
-  		type="RRTPlanner" 
-  		name="RRTPlanner"
-  		required="true" 
-  	/>
-  	<node 
-		pkg="envi_nav" 
-		type="MapBuild" 
-		name="MapBuild"
-	/>
+		
+	<!-- Map server -->
+   	<arg name="map_file" default="$(find envi_nav)/test/maps/TestMap.yaml"/>
+   	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+   	
   	<test 
-  		test-name="RRTPlanner_test" 
+  		test-name="EnviNavTests" 
   		pkg="envi_nav" 
-  		type="RRTPlanner_test" 
-  	/>
-  	<test 
-  		test-name="MapBuild_test" 
-  		pkg="envi_nav" 
-  		type="MapBuild_test" 
+  		type="EnviNavTests" 
   	/>
 </launch>
