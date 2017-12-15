@@ -1,9 +1,44 @@
-/*
- * RRTPlannerHelper.h
+/** @file RRTPlannerHelper.h
+ * @brief Global path planner implementing the RRT algorithm.
  *
- *  Created on: Dec 15, 2017
- *      Author: sammie
+ * @author Samantha Johnson
+ * @date December 15, 2017
+ * @license BSD 3-Clause License
+ * @copyright (c) 2017, Samantha Johnson
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @details This class was created to perform the calculations for the RRTPlanner plugin. This
+ * class implements an RRT algorithm which generates a path by creating a tree full of
+ * random nodes that are connected to their nearest node neighbor if the path is clear. Once the goal is
+ * reached by the tree, the planner returns a path which is a connection of the nodes in
+ * the tree that traverse from start to goal.
  */
+
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
@@ -18,10 +53,20 @@
 
 class RRTPlannerHelper {
  public:
+  /**
+   * @brief Constructor for the class
+   * @param costmap The costmap used in path planning
+   * @param mapX The size of the map in x coordinates
+   * @param mapY The size of the map in y coordinates
+   * @param resolution The resolution of the costmap
+   * @param originX The x origin of the costmap
+   * @param originY The y origin of the costmap
+   * @param goal The given goal pose for the robot
+   * @param start The given start pose of the robot
+   */
   RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int mapX, int mapY,
                    float resolution, float originX, float originY,
                    const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start);
-
   /**
    * @struct qTree
    * @brief Structure that holds the data related to each node in the tree
@@ -34,14 +79,15 @@ class RRTPlannerHelper {
   };
 
   /**
-   * @brief Gets a random X and Y coordinate to create a new noded in the tree
-   * @return A random configuration in the costmap
+   * @brief Gets a random X and Y coordinate to create a new node in the tree
+   * @return A random configuration that lies in the costmap
    */
   geometry_msgs::PoseStamped rand_config();
 
   /**
    * @brief Gets the nearest node in the tree
    * @param qRand The randomly generated pose for the robot
+   * @param treeGraph The set of all of the nodes if the tree
    * @return The index of the nearest vertex in the tree
    */
   int nearest_vertex(geometry_msgs::PoseStamped qRand,
@@ -51,37 +97,38 @@ class RRTPlannerHelper {
    * @brief Checks that the path between the two nodes is safe
    * @param qRand The new random configuration
    * @param iNear The index of the nearest node in the tree
+   * @param treeGraph The set of all of the nodes in the tree
    * @return 0 if the path is blocked, and 1 if the path is clear
    */
   bool path_safe(geometry_msgs::PoseStamped qRand, int iNear,
-                 std::vector<qTree> _treeGraph);
+                 std::vector<qTree> treeGraph);
 
   /**
    * @brief Checks that the path between the newly added node and the goal is safe
    * @param qNew The new configuration added to the tree
-   * @param iNew The index of the node being checked for goal
    * @return 0 if path is blocked, and 1 if the path is clear
    */
   bool check_goal(geometry_msgs::PoseStamped qNew);
 
   /**
    * @brief Builds the planned path from the node tree
-   * @return 0 if plan could not be built, and 1 if a plan was generated
+   * @param treeGraph The set of all of the nodes in the tree
+   * @return The global path plan that was generated by the RRT algorithm
    */
   std::vector<geometry_msgs::PoseStamped> build_plan(
-      std::vector<qTree> _treeGraph);
+      std::vector<qTree> treeGraph);
 
   /**
    * @brief Converts the coordinates given from rviz to costmap coordinates
-   * @param x The x component of the coordinate
-   * @param y The y component of the coordinate
+   * @param x The x component of the coordinate, this gets updated
+   * @param y The y component of the coordinate, this gets updated
    */
   void rviz_map(double& x, double& y);
 
   /**
    * @brief Converts the coordinates from the costmap to rviz coordinates
-   * @param x The x component of the coordinate
-   * @param y The y component of the coordinate
+   * @param x The x component of the coordinate, this gets updated
+   * @param y The y component of the coordinate, this gets updated
    */
   void map_rviz(double& x, double& y);
 

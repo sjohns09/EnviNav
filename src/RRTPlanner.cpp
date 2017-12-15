@@ -34,7 +34,7 @@
  *
  * @details This plugin was created to interface with the nav_core/base_global_planner 
  * framework and replace the default global planner used in the navigation stack. This
- * plugin implements an RRT algorithm which generates a path by creating a tree full of
+ * plugin uses an RRT algorithm which generates a path by creating a tree full of
  * random nodes that are connected to their nearest node neighbor if the path is clear. Once the goal is
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.
@@ -71,7 +71,6 @@ void RRTPlanner::initialize(std::string name,
   costmap = costmapRos->getCostmap();
 
   ros::NodeHandle private_nh("~/" + name);
-  // private_nh.param("step_size", _stepSize, _costmap->getResolution());
 
   mapSizeX = costmap->getSizeInCellsX();
   mapSizeY = costmap->getSizeInCellsY();
@@ -79,11 +78,7 @@ void RRTPlanner::initialize(std::string name,
   originX = costmap->getOriginX();
   originY = costmap->getOriginY();
 
-  ROS_INFO(
-      "MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
-      mapSizeX, mapSizeY, resolution, originX, originY);
-
-  ROS_INFO("RRT Planner initialized!!");
+  ROS_INFO("RRT Planner initialized!");
   _initialized = true;
 }
 
@@ -96,14 +91,13 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     return false;
   }
 
-  ROS_INFO("Got a start: %.2f, %.2f, and a goal: %.2f, %.2f",
+  ROS_INFO("Got a start: (%f, %f), and a goal: (%f, %f)",
            start.pose.position.x, start.pose.position.y, goal.pose.position.x,
            goal.pose.position.y);
 
   std::vector<RRTPlannerHelper::qTree> treeGraph;
   RRTPlannerHelper helper(costmap, mapSizeX, mapSizeY, resolution,
                                 originX, originY, goal, start);
-
   plan.clear();
 
   bool done = false;
@@ -121,21 +115,15 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   double goalMapX = _goal.pose.position.x;
   double goalMapY = _goal.pose.position.y;
 
-  ROS_INFO("Start Rviz (%f, %f) - Goal Rviz (%f, %f)", startMapX, startMapY,
-           goalMapX, goalMapY);
-
   helper.rviz_map(startMapX, startMapY);
   helper.rviz_map(goalMapX, goalMapY);
-
-  ROS_INFO("Start Map (%f, %f) - Goal Map (%f, %f)", startMapX, startMapY,
-           goalMapX, goalMapY);
 
   _start.pose.position.x = startMapX;
   _start.pose.position.y = startMapY;
   _goal.pose.position.x = goalMapX;
   _goal.pose.position.y = goalMapY;
 
-  ROS_INFO("Making Navigation Plan!");
+  ROS_INFO("Making Navigation Plan Using RRT!");
 
   // Add start node to tree
   RRTPlannerHelper::qTree startQ;
@@ -147,7 +135,6 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
   // RRT Algorithm
   while (done == false) {
-    ROS_INFO("New Iteration");
     // Get Random Pose
     qRand = helper.rand_config();
 
@@ -182,14 +169,14 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
           treeGraph.push_back(qGoal);
           ROS_INFO("Goal can be reached!");
 
-          plan = helper.build_plan(treeGraph);  //Will return true when done
+          plan = helper.build_plan(treeGraph);
           done = true;
         }
       }
     }
   }
-  ROS_INFO("Plan Created");
-  ROS_INFO("Plan Length = %d", plan.size());
+  ROS_INFO("New Plan Created");
+  ROS_INFO("Plan Length = %d nodes", plan.size());
   return done;
 }
 

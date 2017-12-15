@@ -34,7 +34,7 @@
  *
  * @details This plugin was created to interface with the nav_core/base_global_planner 
  * framework and replace the default global planner used in the navigation stack. This
- * plugin implements an RRT algorithm which generates a path by creating a tree full of
+ * plugin uses an RRT algorithm which generates a path by creating a tree full of
  * random nodes that are connected to their nearest node neighbor if the path is clear. Once the goal is
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.

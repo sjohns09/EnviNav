@@ -1,5 +1,5 @@
 /** @file EnviNavTests.cpp
- * @brief Test for RRT Planning algorithm
+ * @brief Tests for RRT Planning algorithm
  *
  * @author Samantha Johnson
  * @date December 15, 2017
