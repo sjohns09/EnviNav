@@ -159,6 +159,7 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   float _resolution, _originX, _originY;
   int _mapSizeX, _mapSizeY;
   bool _initialized;
+  double _allowedDist;
 
 };
 

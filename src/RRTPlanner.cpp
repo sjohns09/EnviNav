@@ -39,7 +39,7 @@
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.
  */
- 
+
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
@@ -64,6 +64,8 @@ RRTPlanner::RRTPlanner(std::string name, costmap_2d::Costmap2DROS* costmapRos) {
 void RRTPlanner::initialize(std::string name,
                             costmap_2d::Costmap2DROS* costmapRos) {
   srand(time(NULL));
+
+  _allowedDist = 100;
   _costmapROS = costmapRos;
   _costmap = costmapRos->getCostmap();
 
@@ -84,34 +86,33 @@ void RRTPlanner::initialize(std::string name,
   _initialized = true;
 }
 
-void RRTPlanner::initialize(std::string name, int mapSizeX, int mapSizeY, float resolution,
-                            float originX, float originY,
-                            costmap_2d::Costmap2DROS map) {
-  _mapSizeX = mapSizeX;
-  _mapSizeY = mapSizeY;
-  _resolution = resolution;
-  _originX = originX;
-  _originY = originY;
-  _costmap = map.getCostmap();
-
-  ros::NodeHandle private_nh("~/" + name);
-  // private_nh.param("step_size", _stepSize, _costmap->getResolution());
-
-  _mapSizeX = _costmap->getSizeInCellsX();
-  _mapSizeY = _costmap->getSizeInCellsY();
-  _resolution = _costmap->getResolution();
-  _originX = _costmap->getOriginX();
-  _originY = _costmap->getOriginY();
-
-  ROS_INFO(
-      "MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
-      _mapSizeX, _mapSizeY, _resolution, _originX, _originY);
-
-  ROS_INFO("RRT Planner initialized!!");
-  _initialized = true;
-
-
-}
+//void RRTPlanner::initialize(std::string name, int mapSizeX, int mapSizeY,
+//                            float resolution, float originX, float originY,
+//                            costmap_2d::Costmap2DROS map) {
+//  _mapSizeX = mapSizeX;
+//  _mapSizeY = mapSizeY;
+//  _resolution = resolution;
+//  _originX = originX;
+//  _originY = originY;
+//  _costmap = map.getCostmap();
+//
+//  ros::NodeHandle private_nh("~/" + name);
+//  // private_nh.param("step_size", _stepSize, _costmap->getResolution());
+//
+//  _mapSizeX = _costmap->getSizeInCellsX();
+//  _mapSizeY = _costmap->getSizeInCellsY();
+//  _resolution = _costmap->getResolution();
+//  _originX = _costmap->getOriginX();
+//  _originY = _costmap->getOriginY();
+//
+//  ROS_INFO(
+//      "MapSizeX = %f, MapSizeY = %f, Resolution = %f, originX = %f, originY = %f",
+//      _mapSizeX, _mapSizeY, _resolution, _originX, _originY);
+//
+//  ROS_INFO("RRT Planner initialized!!");
+//  _initialized = true;
+//
+//}
 
 bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
@@ -174,7 +175,6 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   startQ.qNear = _start;
   startQ.nearIndex = 0;
   startQ.myIndex = 0;
-
   _treeGraph.push_back(startQ);
 
   // RRT Algorithm
@@ -186,24 +186,27 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     // Find nearest Vertex in tree
     iNear = nearest_vertex(qRand);
 
-    // Check if path is safe
-    safe = path_safe(qRand, iNear);
+    // If distance is too far, do not add node
+    if (iNear != -1) {
+      // Check if path is safe
+      safe = path_safe(qRand, iNear);
 
-    // If path is safe add node to tree
-    if (safe == true) {
-      qTree addQ;
-      addQ.q = qRand;
-      addQ.qNear = _treeGraph[iNear].q;
-      addQ.nearIndex = iNear;
-      addQ.myIndex = _treeGraph.size();
-      _treeGraph.push_back(addQ);
+      // If path is safe add node to tree
+      if (safe == true) {
+        qTree addQ;
+        addQ.q = qRand;
+        addQ.qNear = _treeGraph[iNear].q;
+        addQ.nearIndex = iNear;
+        addQ.myIndex = _treeGraph.size();
+        _treeGraph.push_back(addQ);
 
-      // Check if goal can be reached
-      build = check_goal(addQ.q, addQ.myIndex);
+        // Check if goal can be reached
+        build = check_goal(addQ.q, addQ.myIndex);
 
-      // If goal can be reached and path is safe
-      if (build == true) {
-        done = build_plan();  //Will return true when done
+        // If goal can be reached and path is safe
+        if (build == true) {
+          done = build_plan();  //Will return true when done
+        }
       }
     }
   }
@@ -220,10 +223,10 @@ geometry_msgs::PoseStamped RRTPlanner::rand_config() {
   bool found = false;
   int randX;
   int randY;
-  double worldX = 0;
-  double worldY = 0;
-  double & worldXRef = worldX;
-  double & worldYRef = worldY;
+//  double worldX = 0;
+//  double worldY = 0;
+//  double & worldXRef = worldX;
+//  double & worldYRef = worldY;
 
   while (!found) {
     // Get Map Size and sample XY in costmap
@@ -231,7 +234,7 @@ geometry_msgs::PoseStamped RRTPlanner::rand_config() {
     randX = rand() % _mapSizeX;
     randY = rand() % _mapSizeY;
 
-    if (_costmap->getCost(randX, randY) == costmap_2d::FREE_SPACE) {
+    if (_costmap->getCost(randX, randY) == 0) {
       found = true;
 
       //_costmap->mapToWorld(randX, randY, worldXRef, worldYRef);
@@ -268,20 +271,26 @@ int RRTPlanner::nearest_vertex(geometry_msgs::PoseStamped qRand) {
     xDif = qRand.pose.position.x - _treeGraph[node].q.pose.position.x;
     yDif = qRand.pose.position.y - _treeGraph[node].q.pose.position.y;
 
-    dist = sqrt((xDif * xDif) + (yDif * yDif));
+    dist = sqrt((pow(xDif, 2)) + (pow(yDif, 2)));
 
     if (dist < minDist) {
       minDist = dist;
-      iNear = _treeGraph[node].myIndex;
+      iNear = node;  //_treeGraph[node].myIndex;
     }
   }
-  ROS_INFO("Nearest Vertex in tree found (%d, %d)",
+  ROS_INFO("Nearest Vertex in tree found (%f, %f)",
            _treeGraph[iNear].q.pose.position.x,
            _treeGraph[iNear].q.pose.position.y);
+  ROS_INFO("Distance = %f", minDist);
+
+  if (minDist > _allowedDist) {
+    iNear = -1;
+  }
+
   return iNear;
 }
 
-// Determine if path is safe using step size to check path
+// Determine if path is safe
 bool RRTPlanner::path_safe(geometry_msgs::PoseStamped qRand, int iNear) {
   ROS_INFO("Checking Path");
   double x2 = _treeGraph[iNear].q.pose.position.x;
@@ -290,77 +299,152 @@ bool RRTPlanner::path_safe(geometry_msgs::PoseStamped qRand, int iNear) {
   double y1 = qRand.pose.position.y;
   double m = (y2 - y1) / (x2 - x1);
   double b = y1 - (m * x1);
-  double y;
-  unsigned int xCell = 0;
-  unsigned int yCell = 0;
+  double y, x;
+  unsigned int xCell;
+  unsigned int yCell;
 //  unsigned int & xCellRef = xCell;
 //  unsigned int & yCellRef = yCell;
   bool free = true;
 
-  double xMax = std::max(x1, x2);
-  double xMin = std::min(x1, x2);
+  if (x1 == x2 && y1 == y2) {
+    return false;
+  }
 
-  for (double x = xMin; x <= xMax; x++) {
-    xCell = (int) round(x);
-    y = m * x + b;
-    yCell = (int) round(y);
+  if (x1 != x2) {
+    double xMax = std::max(x1, x2);
+    double xMin = std::min(x1, x2);
 
-    ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
-    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
-             (yCell * _resolution));
+    for (double x = xMin; x <= xMax; x++) {
+      xCell = (int) round(x);
+      y = m * x + b;
+      yCell = (int) round(y);
 
-    unsigned char cost = _costmap->getCost(xCell, yCell);
-    ROS_INFO("COST = %d", cost);
-    if (cost != 0) {
-      free = false;
-      ROS_INFO("Path is not safe");
-      break;
+      ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+      ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+               (yCell * _resolution));
+
+      unsigned char xCost = _costmap->getCost(xCell, yCell);
+      ROS_INFO("COST = %d", xCost);
+      if (xCost != 0) {
+        free = false;
+        ROS_INFO("Path is not safe");
+        return free;
+      }
     }
   }
+
+  if (y1 != y2) {
+    double yMax = std::max(y1, y2);
+    double yMin = std::min(y1, y2);
+
+    for (double y = yMin; y <= yMax; y++) {
+      yCell = (int) round(y);
+      x = (y - b) / m;
+      xCell = (int) round(x);
+
+      ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+      ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+               (yCell * _resolution));
+
+      unsigned char yCost = _costmap->getCost(xCell, yCell);
+      ROS_INFO("COST = %d", yCost);
+      if (yCost != 0) {
+        free = false;
+        ROS_INFO("Path is not safe");
+        return free;
+      }
+    }
+  }
+
   return free;
 }
 
 // Check if path is safe - See if goal can be reached
 bool RRTPlanner::check_goal(geometry_msgs::PoseStamped qNew, int iNew) {
-  ROS_INFO("Checking Goal");
+  ROS_INFO("Checking Goal Distance");
+
+  double xDif = qNew.pose.position.x - _goal.pose.position.x;
+  double yDif = qNew.pose.position.y - _goal.pose.position.y;
+
+  double dist = sqrt((pow(xDif, 2)) + (pow(yDif, 2)));
+
+  if (dist > _allowedDist) {
+    ROS_INFO("Goal too far");
+    return false;
+  }
+
+  ROS_INFO("Checking Goal Path");
+
   double x2 = _goal.pose.position.x;
   double y2 = _goal.pose.position.y;
   double x1 = qNew.pose.position.x;
   double y1 = qNew.pose.position.y;
   double m = (y2 - y1) / (x2 - x1);
   double b = y1 - (m * x1);
-  double y;
-  unsigned int xCell = 0;
-  unsigned int yCell = 0;
+  double y, x;
+  unsigned int xCell;
+  unsigned int yCell;
 //  unsigned int & xCellRef = xCell;
 //  unsigned int & yCellRef = yCell;
   bool free = true;
 
-  double xMax = std::max(x1, x2);
-  double xMin = std::min(x1, x2);
-
-  for (double x = xMin; x < xMax; x++) {
-    y = m * x + b;
-    xCell = (int) round(x);
-    yCell = (int) round(y);
-
-    ROS_INFO("Points On Goal Path: X = %d, Y = %d", xCell, yCell);
-    ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
-             (yCell * _resolution));
-
-    unsigned char cost = _costmap->getCost(xCell, yCell);
-    ROS_INFO("COST = %d", cost);
-    if (cost != 0) {
-      free = false;
-      break;
+  if (x1 == x2 && y1 == y2) {
+      return false;
     }
-  }
+
+    if (x1 != x2) {
+      double xMax = std::max(x1, x2);
+      double xMin = std::min(x1, x2);
+
+      for (double x = xMin; x <= xMax; x++) {
+        xCell = (int) round(x);
+        y = m * x + b;
+        yCell = (int) round(y);
+
+        ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+        ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+                 (yCell * _resolution));
+
+        unsigned char xCost = _costmap->getCost(xCell, yCell);
+        ROS_INFO("COST = %d", xCost);
+        if (xCost != 0) {
+          free = false;
+          ROS_INFO("Path is not safe");
+          return free;
+        }
+      }
+    }
+
+    if (y1 != y2) {
+      double yMax = std::max(y1, y2);
+      double yMin = std::min(y1, y2);
+
+      for (double y = yMin; y <= yMax; y++) {
+        yCell = (int) round(y);
+        x = (y - b) / m;
+        xCell = (int) round(x);
+
+        ROS_INFO("Points On Path Map: X = %d, Y = %d", xCell, yCell);
+        ROS_INFO("Points On Path Rviz: X = %f, Y = %f", (xCell * _resolution),
+                 (yCell * _resolution));
+
+        unsigned char yCost = _costmap->getCost(xCell, yCell);
+        ROS_INFO("COST = %d", yCost);
+        if (yCost != 0) {
+          free = false;
+          ROS_INFO("Path is not safe");
+          return free;
+        }
+      }
+    }
+
   // Add goal to tree with neighbor qNear if found
   if (free == true) {
     qTree qGoal;
     qGoal.q = _goal;
+    qGoal.qNear = qNew;
     qGoal.nearIndex = iNew;
-	qGoal.myIndex = _treeGraph.size();
+    qGoal.myIndex = _treeGraph.size();
     _treeGraph.push_back(qGoal);
     ROS_INFO("Goal can be reached!");
   }
@@ -374,7 +458,7 @@ bool RRTPlanner::build_plan() {
   qTree qAdd = _treeGraph.back();
   double nearI;
 
-  while (qAdd.nearIndex != 0) {
+  while (qAdd.myIndex != 0) {
     //Add pose to plan starting with goal
     _plan.insert(_plan.begin(), qAdd.q);
 
@@ -382,7 +466,7 @@ bool RRTPlanner::build_plan() {
     nearI = qAdd.nearIndex;
     qAdd = _treeGraph[nearI];
   }
-  // Add start
+  // Add start to plan
   _plan.insert(_plan.begin(), _start);
 
   for (int i = 0; i < _plan.size(); i++) {

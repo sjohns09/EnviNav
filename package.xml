@@ -25,7 +25,7 @@
   <run_depend>nav_core</run_depend>
   <run_depend>base_local_planner</run_depend>
 
-  <test_depend>gtest</test_depends>
+  <test_depend>gtest</test_depend>
 
   <export>
 	<nav_core plugin="${prefix}/RRTPlanner_Plugin.xml" />
