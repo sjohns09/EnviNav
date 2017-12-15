@@ -1,5 +1,5 @@
 /** @file EnviNavTests.cpp
- * @brief Test for RRTPlanner plugin
+ * @brief Test for RRT Planning algorithm
  *
  * @author Samantha Johnson
  * @date December 15, 2017
@@ -47,117 +47,212 @@
 #include "ros/ros.h"
 #include "RRTPlannerHelper.h"
 
-/**
- * @test Verifies that the start and goal points and the first and last poses in the plan
- */
-// TEST(RRTPlanner_test, testPlannerReturnsPathBetweenStartAndGoal) {
-//ros::NodeHandle node;
-// Launch the map server node
-//  geometry_msgs::PoseStamped givenStartFill;
-//  geometry_msgs::PoseStamped givenGoalFill;
-//
-//  givenStartFill.pose.position.x = 1;
-//  givenStartFill.pose.position.y = 1;
-//  givenStartFill.pose.position.z = 0;
-//  givenStartFill.pose.orientation.x = 0;
-//  givenStartFill.pose.orientation.y = 0;
-//  givenStartFill.pose.orientation.z = 0;
-//  givenStartFill.pose.orientation.w = 1;
-//
-//  givenGoalFill.pose.position.x = 3;
-//  givenGoalFill.pose.position.y = 3;
-//  givenGoalFill.pose.position.z = 0;
-//  givenGoalFill.pose.orientation.x = 0;
-//  givenGoalFill.pose.orientation.y = 0;
-//  givenGoalFill.pose.orientation.z = 0;
-//  givenGoalFill.pose.orientation.w = 1;
-//
-//  //This variable holds the final plan in the global planner when called
-//  const geometry_msgs::PoseStamped& givenStart = givenStartFill;
-//  const geometry_msgs::PoseStamped& givenGoal = givenGoalFill;
-//
-//  std::vector<geometry_msgs::PoseStamped> _plan;
-//  std::vector<geometry_msgs::PoseStamped>& plan = _plan;
-//
-//
-//  // Need to call planner here
-//  tf::TransformListener tf(ros::Duration(10));
-//  costmap_2d::Costmap2DROS* costmap = new costmap_2d::Costmap2DROS("my_costmap", tf);
-//  pluginlib::ClassLoader<nav_core::BaseGlobalPlanner> rrt("nav_core", "nav_core::BaseGlobalPlanner");
-//
-//  ROS_INFO("Calling RRT Plugin");
-//  boost::shared_ptr<nav_core::BaseGlobalPlanner> planner = rrt.createInstance("nav_core/RRTPlanner");
-//  ROS_INFO("Initializing");
-//  planner->initialize("RRTPlanner", costmap);
-//  ROS_INFO("Make Plan");
-//  planner->makePlan(givenStart, givenGoal, plan);
-//  // ------
-//
-//  geometry_msgs::PoseStamped startPlan = plan.front();
-//  geometry_msgs::PoseStamped goalPlan = plan.back();
-//
-//  EXPECT_EQ(startPlan.pose.position.x, givenStart.pose.position.x);
-//  EXPECT_EQ(startPlan.pose.position.y, givenStart.pose.position.y);
-//  EXPECT_EQ(goalPlan.pose.position.x, givenGoal.pose.position.x);
-//  EXPECT_EQ(goalPlan.pose.position.y, givenGoal.pose.position.y);
-//}
-/**
- * @test Verifies that all nodes in plan are in free space
- */
-TEST(RRTPlanner_test, testRandomNodeReturnedInMap) {
-  ros::NodeHandle node;
+class RRTPlannerTester {
+ public:
+  RRTPlannerTester();
+  RRTPlannerHelper getHelper();
+  costmap_2d::Costmap2DROS* costmapRos;
+};
 
+RRTPlannerTester* tester = NULL;
+costmap_2d::Costmap2D* _costmap;
+
+RRTPlannerTester::RRTPlannerTester() {
   tf::TransformListener tf(ros::Duration(10));
-  costmap_2d::Costmap2DROS* costmapRos = new costmap_2d::Costmap2DROS(
-      "test_costmap", tf);
-  costmap_2d::Costmap2D* _costmap = costmapRos->getCostmap();
+  costmapRos = new costmap_2d::Costmap2DROS("test_costmap", tf);
+}
 
-  int _mapSizeX = 10;
-  int _mapSizeY = 10;
-  float _resolution = 1;
-  float _originX = 0;
-  float _originY = 0;
+RRTPlannerHelper RRTPlannerTester::getHelper() {
 
-  geometry_msgs::PoseStamped givenStartFill;
-  geometry_msgs::PoseStamped givenGoalFill;
+  _costmap = costmapRos->getCostmap();
 
-  givenStartFill.pose.position.x = 1;
-  givenStartFill.pose.position.y = 1;
-  givenStartFill.pose.position.z = 0;
-  givenStartFill.pose.orientation.x = 0;
-  givenStartFill.pose.orientation.y = 0;
-  givenStartFill.pose.orientation.z = 0;
-  givenStartFill.pose.orientation.w = 1;
+    int _mapSizeX = 10;
+    int _mapSizeY = 10;
+    float _resolution = 1;
+    float _originX = 0;
+    float _originY = 0;
 
-  givenGoalFill.pose.position.x = 3;
-  givenGoalFill.pose.position.y = 3;
-  givenGoalFill.pose.position.z = 0;
-  givenGoalFill.pose.orientation.x = 0;
-  givenGoalFill.pose.orientation.y = 0;
-  givenGoalFill.pose.orientation.z = 0;
-  givenGoalFill.pose.orientation.w = 1;
+    geometry_msgs::PoseStamped givenStartFill;
+    geometry_msgs::PoseStamped givenGoalFill;
 
-  const geometry_msgs::PoseStamped& _goal = givenGoalFill;
-  const geometry_msgs::PoseStamped& _start = givenStartFill;
+    givenStartFill.pose.position.x = 1;
+    givenStartFill.pose.position.y = 1;
+    givenStartFill.pose.position.z = 0;
+    givenStartFill.pose.orientation.x = 0;
+    givenStartFill.pose.orientation.y = 0;
+    givenStartFill.pose.orientation.z = 0;
+    givenStartFill.pose.orientation.w = 1;
 
-  RRTPlannerHelper helper(_costmap, _mapSizeX, _mapSizeY, _resolution, _originX,
-                          _originY, _goal, _start);
+    givenGoalFill.pose.position.x = 9;
+    givenGoalFill.pose.position.y = 9;
+    givenGoalFill.pose.position.z = 0;
+    givenGoalFill.pose.orientation.x = 0;
+    givenGoalFill.pose.orientation.y = 0;
+    givenGoalFill.pose.orientation.z = 0;
+    givenGoalFill.pose.orientation.w = 1;
+
+    const geometry_msgs::PoseStamped& _goal = givenGoalFill;
+    const geometry_msgs::PoseStamped& _start = givenStartFill;
+
+    RRTPlannerHelper helper(_costmap, _mapSizeX, _mapSizeY, _resolution, _originX,
+                            _originY, _goal, _start);
+    ROS_INFO("Helper Initialized");
+
+    return helper;
+}
+
+TEST(RRTPlannerHelper_test, testRandomNodeReturnedInMap) {
+  RRTPlannerTester tester;
+  RRTPlannerHelper helper = tester.getHelper();
 
   geometry_msgs::PoseStamped rand = helper.rand_config();
 
-  EXPECT_LE(rand.pose.position.x, _mapSizeX);
-  EXPECT_LE(rand.pose.position.y, _mapSizeY);
+  EXPECT_LE(rand.pose.position.x, helper._mapSizeX);
+  EXPECT_LE(rand.pose.position.y, helper._mapSizeY);
 }
 
-TEST(RRTPlanner_test, test) {
-  ros::NodeHandle node;
+TEST(RRTPlanner_test, testNearestNodeReturnedFromTreeGraph) {
+  RRTPlannerTester tester;
+  RRTPlannerHelper helper = tester.getHelper();
 
-  EXPECT_EQ("", "");
+  geometry_msgs::PoseStamped q;
+  RRTPlannerHelper::qTree node1;
+  RRTPlannerHelper::qTree node2;
+  RRTPlannerHelper::qTree node3;
+
+  q.pose.position.x = 6;
+  q.pose.position.y = 3;
+
+  node1.q.pose.position.x = 1;
+  node1.q.pose.position.y = 1;
+  node1.myIndex = 0;
+  node1.nearIndex = 0;
+
+  node2.q.pose.position.x = 1;
+  node2.q.pose.position.y = 8;
+  node2.myIndex = 1;
+  node2.nearIndex = 2;
+
+  node3.q.pose.position.x = 3;
+  node3.q.pose.position.y = 3;
+  node3.myIndex = 2;
+  node3.nearIndex = 0;
+
+  std::vector<RRTPlannerHelper::qTree> tree;
+  tree.push_back(node1);
+  tree.push_back(node2);
+  tree.push_back(node3);
+
+  int iNear = helper.nearest_vertex(q, tree);
+
+  EXPECT_EQ(iNear, 2);
+
+}
+
+TEST(RRTPlanner_test, testPathBetweenNodesIsSafe) {
+  RRTPlannerTester tester;
+  RRTPlannerHelper helper = tester.getHelper();
+
+  geometry_msgs::PoseStamped q;
+  RRTPlannerHelper::qTree node1;
+  RRTPlannerHelper::qTree node2;
+  RRTPlannerHelper::qTree node3;
+
+  q.pose.position.x = 6;
+  q.pose.position.y = 3;
+
+  node1.q.pose.position.x = 1;
+  node1.q.pose.position.y = 1;
+  node1.myIndex = 0;
+  node1.nearIndex = 0;
+
+  node2.q.pose.position.x = 1;
+  node2.q.pose.position.y = 8;
+  node2.myIndex = 1;
+  node2.nearIndex = 2;
+
+  node3.q.pose.position.x = 3;
+  node3.q.pose.position.y = 3;
+  node3.myIndex = 2;
+  node3.nearIndex = 0;
+
+  std::vector<RRTPlannerHelper::qTree> tree;
+  tree.push_back(node1);
+  tree.push_back(node2);
+  tree.push_back(node3);
+
+  bool safe = helper.path_safe(q, 2, tree);
+
+  EXPECT_EQ(safe, true);
+}
+
+TEST(RRTPlanner_test, testPathToGoalIsSafe) {
+  RRTPlannerTester tester;
+  RRTPlannerHelper helper = tester.getHelper();
+
+  geometry_msgs::PoseStamped q;
+
+  q.pose.position.x = 1;
+  q.pose.position.y = 8;
+
+  bool safe = helper.check_goal(q);
+
+  EXPECT_EQ(safe, true);
+}
+
+TEST(RRTPlanner_test, testBuildPlanIsCorrect) {
+  RRTPlannerTester tester;
+  RRTPlannerHelper helper = tester.getHelper();
+
+  geometry_msgs::PoseStamped q;
+  RRTPlannerHelper::qTree node1;
+  RRTPlannerHelper::qTree node2;
+  RRTPlannerHelper::qTree node3;
+  RRTPlannerHelper::qTree node4;
+
+  node1.q.pose.position.x = 1;
+  node1.q.pose.position.y = 1;
+  node1.myIndex = 0;
+  node1.nearIndex = 0;
+
+  node2.q.pose.position.x = 1;
+  node2.q.pose.position.y = 8;
+  node2.myIndex = 1;
+  node2.nearIndex = 2;
+
+  node3.q.pose.position.x = 3;
+  node3.q.pose.position.y = 3;
+  node3.myIndex = 2;
+  node3.nearIndex = 0;
+
+  node4.q.pose.position.x = 9;
+  node4.q.pose.position.y = 9;
+  node4.myIndex = 3;
+  node4.nearIndex = 1;
+
+  std::vector<RRTPlannerHelper::qTree> tree;
+  tree.push_back(node1);
+  tree.push_back(node2);
+  tree.push_back(node3);
+  tree.push_back(node4);
+
+  std::vector<geometry_msgs::PoseStamped> plan = helper.build_plan(tree);
+
+  EXPECT_EQ(plan[0].pose.position.x, 1);
+  EXPECT_EQ(plan[0].pose.position.y, 1);
+
+  EXPECT_EQ(plan[1].pose.position.x, 3);
+  EXPECT_EQ(plan[1].pose.position.y, 3);
+
+  EXPECT_EQ(plan[2].pose.position.x, 1);
+  EXPECT_EQ(plan[2].pose.position.y, 8);
+
+  EXPECT_EQ(plan[3].pose.position.x, 9);
+  EXPECT_EQ(plan[3].pose.position.y, 9);
 }
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "EnviNavTests");
-
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

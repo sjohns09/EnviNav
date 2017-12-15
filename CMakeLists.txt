@@ -195,17 +195,13 @@ add_library(envi_nav src/MapBuild.cpp src/RRTPlanner.cpp src/RRTPlannerHelper.cp
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_envi_nav.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+#if(CATKIN_ENABLE_TESTING)
+#	catkin_add_gtest(EnviNavTests test/EnviNavTests.cpp ../src/RRTPlannerHelper.cpp)
+#	target_link_libraries(EnviNavTests envi_nav)
+#endif()
 
 if(CATKIN_ENABLE_TESTING)
 	find_package(rostest REQUIRED)
 	add_rostest_gtest(EnviNavTests test/EnviNavTests.test test/EnviNavTests.cpp)
 	target_link_libraries(EnviNavTests envi_nav ${catkin_LIBRARIES})
-	add_dependencies(EnviNavTests envi_nav_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 endif()
