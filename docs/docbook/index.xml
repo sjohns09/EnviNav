@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <info>
+    <title>EnviNav</title>
+    </info>
+    <chapter>
+        <title>Class Documentation</title>
+        <xi:include href="classnav__core_1_1BaseGlobalPlanner.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="classMapBuild.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="structRRTPlannerHelper_1_1qTree.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="classRRTPlanner.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="classRRTPlannerHelper.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="classRRTPlannerTester.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    </chapter>
+    <chapter>
+        <title>File Documentation</title>
+        <xi:include href="MapBuild_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="RRTPlanner_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="RRTPlannerHelper_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="MapBuild_8cpp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="mapping__demo_8cpp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="RRTPlanner_8cpp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="RRTPlannerHelper_8cpp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="EnviNavTests_8cpp.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    </chapter>
+    <chapter>
+        <title>Directory Documentation</title>
+        <xi:include href="dir_d44c64559bbebec7f509842c48db8b23.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="dir_68267d1309a1af8e8297ef4c3efbcdba.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+        <xi:include href="dir_13e138d54eb8818da29c3992edef070a.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    </chapter>
+</book>

@@ -1,4 +1,15 @@
 <launch>
+   	
+   	<arg name="record_bag" default = "false"/>
+   	
+   	<node
+		pkg="rosbag"
+		type="record"
+		name="envi_nav_bag"
+		args="-a --duration=30 -O navigation_demo.bag"
+		if="$(arg record_bag)"
+	/>
+	
    	<!-- Map server -->
    	<arg name="map_file" default="$(find envi_nav)/maps/demo_built_map/home.yaml"/>
    	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />

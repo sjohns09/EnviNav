@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="classMapBuild">
+<title>MapBuild class Reference</title>
+<para>Inheritance diagram for MapBuild</para>
+<para>
+    <figure>
+        <title>Inheritance graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classMapBuild__inherit__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+<para>Collaboration diagram for MapBuild</para>
+<para>
+    <figure>
+        <title>Collaboration graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classMapBuild__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+        <section>
+            <title></title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="classMapBuild_1a116a872478f708f37d45bb56f17d1549">MapBuild</link> (
+)<para><emphasis>The default constructor for the MapBuild class.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>void <link linkend="classMapBuild_1a6f719b1f109486779ff0d60cc8d7ca45">save_map</link> (
+)<para><emphasis>Saves the map being built by the navigation demo.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>virtual <link linkend="classMapBuild_1a2a9fb5079088a5d4af0bc6e8c0bf37de">~MapBuild</link> (
+)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+            <section xml:id="classMapBuild_1a116a872478f708f37d45bb56f17d1549">
+                <title>MapBuild::MapBuild ()</title> <emphasis>The default constructor for the MapBuild class.</emphasis>
+                
+            </section>
+            <section xml:id="classMapBuild_1a6f719b1f109486779ff0d60cc8d7ca45">
+                <title>void MapBuild::save_map ()</title> <emphasis>Saves the map being built by the navigation demo.</emphasis>
+                
+            </section>
+            <section xml:id="classMapBuild_1a2a9fb5079088a5d4af0bc6e8c0bf37de">
+                <title>MapBuild::~MapBuild ()</title> <emphasis></emphasis>
+                
+            </section>
+</section>

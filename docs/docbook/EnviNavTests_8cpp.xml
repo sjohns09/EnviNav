@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="EnviNavTests_8cpp">
+    <title>EnviNavTests.cpp File Reference</title>
+    <programlisting>#include &lt;geometry_msgs/PoseStamped.h&gt;</programlisting>
+    <programlisting>#include &lt;costmap_2d/costmap_2d.h&gt;</programlisting>
+    <programlisting>#include &lt;costmap_2d/costmap_2d_ros.h&gt;</programlisting>
+    <programlisting>#include &lt;tf/transform_listener.h&gt;</programlisting>
+    <programlisting>#include &lt;pluginlib/class_loader.h&gt;</programlisting>
+    <programlisting>#include &lt;nav_core/base_global_planner.h&gt;</programlisting>
+    <programlisting>#include &lt;gtest/gtest.h&gt;</programlisting>
+    <programlisting>#include &lt;ros/ros.h&gt;</programlisting>
+    <programlisting>#include &quot;RRTPlannerHelper.h&quot;</programlisting>
+    <programlisting>#include &lt;vector&gt;</programlisting>
+<para>Include dependency diagram for EnviNavTests.cpp</para>
+<para>
+    <figure>
+        <title>Dependency diagram</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="EnviNavTests_8cpp__incl.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+<para>Included by dependency diagram for EnviNavTests.cpp</para>
+<para>
+    <figure>
+        <title>Dependency diagram</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="EnviNavTests_8cpp__dep__incl.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+        <section>
+            <title> Classes </title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>struct <link linkend="classRRTPlannerTester">RRTPlannerTester</link></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title>Functions</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="EnviNavTests_8cpp_1a30d771ebff6f9a2f4ee2644148ba2d17">TEST</link> (
+RRTPlannerHelper_test , testRandomNodeReturnedInMap )</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="EnviNavTests_8cpp_1a353d72db1768549c293348dfd4321418">TEST</link> (
+RRTPlanner_test , testNearestNodeReturnedFromTreeGraph )</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="EnviNavTests_8cpp_1a18cda9b5208b0db48f3c6106262c1464">TEST</link> (
+RRTPlanner_test , testPathBetweenNodesIsSafe )</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="EnviNavTests_8cpp_1a00a680f40a43d54add2136b2d9c281c9">TEST</link> (
+RRTPlanner_test , testPathToGoalIsSafe )</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="EnviNavTests_8cpp_1aadaae3148b63ed1051ee75013b8ed9f2">TEST</link> (
+RRTPlanner_test , testBuildPlanIsCorrect )</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>int <link linkend="EnviNavTests_8cpp_1a3c04138a5bfe5d72780bb7e82a18e627">main</link> (
+int argc, char ** argv)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+    <simplesect>
+        <title>Detailed Description</title>
+
+<para>Tests for RRT Planning algorithm. </para>
+
+<para><formalpara><title>Author: </title>
+
+<para>Samantha Johnson </para>
+</formalpara>
+<formalpara><title>Date: </title>
+
+<para>December 15, 2017  BSD 3-Clause License </para>
+</formalpara>
+<formalpara><title>Copyright: </title>
+
+<para>(c) 2017, Samantha Johnson All rights reserved.</para>
+</formalpara>
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</para>
+
+<para>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</para>
+
+<para>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</para>
+
+<para>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</para>
+
+<para>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</para>
+
+<para>Tests for the RRT algorithm used as a global path planner plugin to the navigation stack </para>
+    <para>Definition in file /home/sammie/catkin_ws/src/envi_nav/test/EnviNavTests.cpp</para>
+    </simplesect>
+</section>

@@ -1,0 +1,461 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="classRRTPlannerHelper">
+<title>RRTPlannerHelper class Reference</title>
+<para>Inheritance diagram for RRTPlannerHelper</para>
+<para>
+    <figure>
+        <title>Inheritance graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classRRTPlannerHelper__inherit__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+<para>Collaboration diagram for RRTPlannerHelper</para>
+<para>
+    <figure>
+        <title>Collaboration graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classRRTPlannerHelper__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+        <section>
+            <title> Classes </title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>struct <link linkend="structRRTPlannerHelper_1_1qTree">RRTPlannerHelper::qTree</link></para>
+<para><emphasis>Structure that holds the data related to each node in the tree.</emphasis></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title>Public Attributes</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>std::vector&lt; geometry_msgs::PoseStamped &gt; _plan</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>geometry_msgs::PoseStamped _goal</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>geometry_msgs::PoseStamped _start</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>costmap_2d::Costmap2D * _costmap</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>float _resolution</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>float _originX</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>float _originY</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>int _mapSizeX</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>int _mapSizeY</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>double _allowedDist</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title></title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="classRRTPlannerHelper_1af99e3fe000e73de8256f59d89c592e96">RRTPlannerHelper</link> (
+costmap_2d::Costmap2D * costmap, int mapX, int mapY, float resolution, float originX, float originY, const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start)<para><emphasis>Constructor for the class.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>geometry_msgs::PoseStamped <link linkend="classRRTPlannerHelper_1aae3ca3af6424a1014af42db124e5cd4a">rand_config</link> (
+)<para><emphasis>Gets a random X and Y coordinate to create a new node in the tree.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>int <link linkend="classRRTPlannerHelper_1a939aa6f8a7eeb2142cc554a8790614bd">nearest_vertex</link> (
+geometry_msgs::PoseStamped qRand, std::vector&lt; <link linkend="structRRTPlannerHelper_1_1qTree">qTree</link> &gt; treeGraph)<para><emphasis>Gets the nearest node in the tree.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>bool <link linkend="classRRTPlannerHelper_1a4beec66805ee1ddd248b34054d62e3eb">path_safe</link> (
+geometry_msgs::PoseStamped qRand, int iNear, std::vector&lt; <link linkend="structRRTPlannerHelper_1_1qTree">qTree</link> &gt; treeGraph)<para><emphasis>Checks that the path between the two nodes is safe.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>bool <link linkend="classRRTPlannerHelper_1aebf2950bb391ab168ac677f56c851575">check_goal</link> (
+geometry_msgs::PoseStamped qNew)<para><emphasis>Checks that the path between the newly added node and the goal is safe.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>std::vector&lt; geometry_msgs::PoseStamped &gt; <link linkend="classRRTPlannerHelper_1a76d080da45ea6b5d7163dfc7bce3daf7">build_plan</link> (
+std::vector&lt; <link linkend="structRRTPlannerHelper_1_1qTree">qTree</link> &gt; treeGraph)<para><emphasis>Builds the planned path from the node tree.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>void <link linkend="classRRTPlannerHelper_1afde8ae441b0c245d4ea35546cf3628c8">rviz_map</link> (
+double &amp; x, double &amp; y)<para><emphasis>Converts the coordinates given from rviz to costmap coordinates.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>void <link linkend="classRRTPlannerHelper_1a7616495b1de44739bc8decda8dce3691">map_rviz</link> (
+double &amp; x, double &amp; y)<para><emphasis>Converts the coordinates from the costmap to rviz coordinates.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title>Member Data Documentation</title>
+        </section>
+            <section xml:id="classRRTPlannerHelper_1af99e3fe000e73de8256f59d89c592e96">
+                <title>RRTPlannerHelper::RRTPlannerHelper (costmap_2d::Costmap2D *costmap, int mapX, int mapY, float resolution, float originX, float originY, const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start)</title> <emphasis>Constructor for the class.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>costmap</entry>
+                                <entry>
+<para>The costmap used in path planning </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>mapX</entry>
+                                <entry>
+<para>The size of the map in x coordinates </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>mapY</entry>
+                                <entry>
+<para>The size of the map in y coordinates </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>resolution</entry>
+                                <entry>
+<para>The resolution of the costmap </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>originX</entry>
+                                <entry>
+<para>The x origin of the costmap </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>originY</entry>
+                                <entry>
+<para>The y origin of the costmap </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>goal</entry>
+                                <entry>
+<para>The given goal pose for the robot </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>start</entry>
+                                <entry>
+<para>The given start pose of the robot </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                </para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1aae3ca3af6424a1014af42db124e5cd4a">
+                <title>geometry_msgs::PoseStamped RRTPlannerHelper::rand_config ()</title> <emphasis>Gets a random X and Y coordinate to create a new node in the tree.</emphasis>
+                
+<para><formalpara><title>Returns: </title>
+
+<para>A random configuration that lies in the costmap </para>
+</formalpara>
+</para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1a939aa6f8a7eeb2142cc554a8790614bd">
+                <title>int RRTPlannerHelper::nearest_vertex (geometry_msgs::PoseStamped qRand, std::vector&lt; qTree &gt; treeGraph)</title> <emphasis>Gets the nearest node in the tree.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>qRand</entry>
+                                <entry>
+<para>The randomly generated pose for the robot </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>treeGraph</entry>
+                                <entry>
+<para>The set of all of the nodes if the tree </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                <formalpara><title>Returns: </title>
+
+<para>The index of the nearest vertex in the tree </para>
+</formalpara>
+</para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1a4beec66805ee1ddd248b34054d62e3eb">
+                <title>bool RRTPlannerHelper::path_safe (geometry_msgs::PoseStamped qRand, int iNear, std::vector&lt; qTree &gt; treeGraph)</title> <emphasis>Checks that the path between the two nodes is safe.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>qRand</entry>
+                                <entry>
+<para>The new random configuration </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>iNear</entry>
+                                <entry>
+<para>The index of the nearest node in the tree </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>treeGraph</entry>
+                                <entry>
+<para>The set of all of the nodes in the tree </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                <formalpara><title>Returns: </title>
+
+<para>0 if the path is blocked, and 1 if the path is clear </para>
+</formalpara>
+</para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1aebf2950bb391ab168ac677f56c851575">
+                <title>bool RRTPlannerHelper::check_goal (geometry_msgs::PoseStamped qNew)</title> <emphasis>Checks that the path between the newly added node and the goal is safe.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>qNew</entry>
+                                <entry>
+<para>The new configuration added to the tree </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                <formalpara><title>Returns: </title>
+
+<para>0 if path is blocked, and 1 if the path is clear </para>
+</formalpara>
+</para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1a76d080da45ea6b5d7163dfc7bce3daf7">
+                <title>std::vector&lt; geometry_msgs::PoseStamped &gt; RRTPlannerHelper::build_plan (std::vector&lt; qTree &gt; treeGraph)</title> <emphasis>Builds the planned path from the node tree.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>treeGraph</entry>
+                                <entry>
+<para>The set of all of the nodes in the tree </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                <formalpara><title>Returns: </title>
+
+<para>The global path plan that was generated by the RRT algorithm </para>
+</formalpara>
+</para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1afde8ae441b0c245d4ea35546cf3628c8">
+                <title>void RRTPlannerHelper::rviz_map (double &amp;x, double &amp;y)</title> <emphasis>Converts the coordinates given from rviz to costmap coordinates.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>x</entry>
+                                <entry>
+<para>The x component of the coordinate, this gets updated </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>y</entry>
+                                <entry>
+<para>The y component of the coordinate, this gets updated </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                </para>
+
+            </section>
+            <section xml:id="classRRTPlannerHelper_1a7616495b1de44739bc8decda8dce3691">
+                <title>void RRTPlannerHelper::map_rviz (double &amp;x, double &amp;y)</title> <emphasis>Converts the coordinates from the costmap to rviz coordinates.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>x</entry>
+                                <entry>
+<para>The x component of the coordinate, this gets updated </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>y</entry>
+                                <entry>
+<para>The y component of the coordinate, this gets updated </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                </para>
+
+            </section>
+</section>

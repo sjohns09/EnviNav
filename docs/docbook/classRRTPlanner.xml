@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="classRRTPlanner">
+<title>RRTPlanner class Reference</title>
+<para>Inheritance diagram for RRTPlanner</para>
+<para>
+    <figure>
+        <title>Inheritance graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classRRTPlanner__inherit__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+<para>Collaboration diagram for RRTPlanner</para>
+<para>
+    <figure>
+        <title>Collaboration graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classRRTPlanner__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+        <section>
+            <title>Private Attributes</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>std::vector&lt; geometry_msgs::PoseStamped &gt; _plan</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>geometry_msgs::PoseStamped _goal</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>geometry_msgs::PoseStamped _start</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>costmap_2d::Costmap2DROS * _costmapROS</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>costmap_2d::Costmap2D * costmap</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>float resolution</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>float originX</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>float originY</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>int mapSizeX</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>int mapSizeY</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>bool _initialized</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title></title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="classRRTPlanner_1a1cbf32fc5cc6dd54404f3ffd25abe34c">RRTPlanner</link> (
+)<para><emphasis>The default constructor for the RRTPlanner.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="classRRTPlanner_1a1f5ba162fab96f8efbf87f4b106d8790">RRTPlanner</link> (
+std::string name, costmap_2d::Costmap2DROS * costmapRos)<para><emphasis>Constructor for the RRTPlanner.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>void <link linkend="classRRTPlanner_1af5b3c48c51620d4e94f8a634589e86fb">initialize</link> (
+std::string name, costmap_2d::Costmap2DROS * costmapRos)<para><emphasis>Initializes the planner.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>bool <link linkend="classRRTPlanner_1ab9abaa15f3deee70dfda2de38f1a6e49">makePlan</link> (
+const geometry_msgs::PoseStamped &amp; start, const geometry_msgs::PoseStamped &amp; goal, std::vector&lt; geometry_msgs::PoseStamped &gt; &amp; plan)<para><emphasis>Begins the path planner algorithm to generate a plan.</emphasis></para>
+</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>virtual <link linkend="classRRTPlanner_1a74297f892c74a45df0cd501f8e6b48a7">~RRTPlanner</link> (
+)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title>Member Data Documentation</title>
+        </section>
+            <section xml:id="classRRTPlanner_1a1cbf32fc5cc6dd54404f3ffd25abe34c">
+                <title>RRTPlanner::RRTPlanner ()</title> <emphasis>The default constructor for the RRTPlanner.</emphasis>
+                
+            </section>
+            <section xml:id="classRRTPlanner_1a1f5ba162fab96f8efbf87f4b106d8790">
+                <title>RRTPlanner::RRTPlanner (std::string name, costmap_2d::Costmap2DROS *costmapRos)</title> <emphasis>Constructor for the RRTPlanner.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>name</entry>
+                                <entry>
+<para>The name of the planner node </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>costmapRos</entry>
+                                <entry>
+<para>The costmap to be used in path planning </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                </para>
+
+            </section>
+            <section xml:id="classRRTPlanner_1af5b3c48c51620d4e94f8a634589e86fb">
+                <title>void RRTPlanner::initialize (std::string name, costmap_2d::Costmap2DROS *costmapRos)</title> <emphasis>Initializes the planner.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>name</entry>
+                                <entry>
+<para>The name of the planner node </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>costmapRos</entry>
+                                <entry>
+<para>The costmap to be used in path planning </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                </para>
+
+            </section>
+            <section xml:id="classRRTPlanner_1ab9abaa15f3deee70dfda2de38f1a6e49">
+                <title>bool RRTPlanner::makePlan (const geometry_msgs::PoseStamped &amp;start, const geometry_msgs::PoseStamped &amp;goal, std::vector&lt; geometry_msgs::PoseStamped &gt; &amp;plan)</title> <emphasis>Begins the path planner algorithm to generate a plan.</emphasis>
+                
+<para>
+                <formalpara>
+                    <title/>
+                    <table frame="all">
+                        <title>Parameters                        </title>
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>start</entry>
+                                <entry>
+<para>The start pose of the robot </para>
+</entry>
+                            </row>
+                            <row>
+                                <entry>goal</entry>
+                                <entry>
+<para>The goal pose of the robot </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                </formalpara>
+                <formalpara><title>Returns: </title>
+
+<para>0 if no plan was found, and 1 if a plan was generated </para>
+</formalpara>
+</para>
+
+            </section>
+            <section xml:id="classRRTPlanner_1a74297f892c74a45df0cd501f8e6b48a7">
+                <title>RRTPlanner::~RRTPlanner ()</title> <emphasis></emphasis>
+                
+            </section>
+</section>

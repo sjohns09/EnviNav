@@ -1,7 +1,7 @@
 # EnviNav
 The Navigation Module for Mental Health RoboPet Companion!
 
-[![Build Status](https://travis-ci.org/sjohns09/envi_nav.svg?branch=Sprint3)](https://travis-ci.org/sjohns09/envi_nav)
+[![Build Status](https://travis-ci.org/sjohns09/envi_nav.svg?branch=master)](https://travis-ci.org/sjohns09/envi_nav)
 
 ACME Robotics is developing an in home mental health robotic pet companion. This companion is geared toward individuals with moderate-severe mental health conditions that would benefit from constant supervision and stimulation from an external source. The target consumer is a young to middle aged adult, who may live alone or are in a situation where there is limited supervision, and who also suffers from a behavioral disorder such as depression, anxiety, or bipolar disorder. The goal of this product is to provide companionship, motivation, emotional stabilization, activity notifications, and emergency resources to aid in the recovery process for an individual suffering from a mental health illness. This product hopes to speed up the recovery time and decrease the relapse rate for these individuals, and also reduce the high number of suicides that occur amongst this group.
 
@@ -33,7 +33,7 @@ The first tab of this sheet contains the Worklog, and the second tab contains th
 
  - Clone repo (https://github.com/sjohns09/envi_nav.git) to catkin workspace
  - Ensure that master branch is checked out
- - In catkin workspace root directory, run catkin_make. This will build the "envi_nav" project.
+ - In catkin workspace root directory, run catkin\_make. This will build the "envi_nav" project.
  
  ```
  cd ~/catkin_ws/src
@@ -61,7 +61,8 @@ To begin the mapping demo:
 ```
 roslaunch envi_nav mapping_demo.launch record_bag:=false
 ```
-
+ - Follow the instructions provided in the external window when the demo is launched
+ 
 To close the mapping demo press ctrl^C in the terminal window twice (once to close the keyboard teleop and another to exit the launch file).
 
 ### Navigation Demo
@@ -77,6 +78,8 @@ To begin the navigation demo:
 ```
 roslaunch envi_nav navigation_demo.launch record_bag:=false
 ```
+ - Initialize the robot in RVIZ using the "2D Pose Estimate" tool
+ - Send a goal pose to the robot using the "2D Nav Goal" tool
 
 To close the navigation demo press ctrl^C in the terminal window to exit the launch file.
 
@@ -94,14 +97,14 @@ To play the bag file run:
 rosbag play ~/.ros/<demo_name>.bag
 ```
 
-Where <demo_name> is either 'navigation_demo' or 'mapping_demo'.
+Where <demo_name> is either 'navigation\_demo' or 'mapping\_demo'.
 
 ## ROSTEST
 
 To run the integration tests using rostest and gtest, in your catkin workspace run:
 
 ```
-catkin_make run_tests envi_nav
+catkin_make run_tests
 ```
 In the summary section in the console window it will show you the number of tests, and whether they successfully passed.
 
@@ -113,7 +116,7 @@ BSD 3-Clause (See LICENSE file for details)
 
  - Learned location names which will allow navigation by voice command
  - Improvements to RRT algorithm to speed up processing time and optimization of path
- - Implementation on a walking robot which will better simulate the pet-likeness of the RoboPet
+ - Implementation on a walking robot which to better simulate the pet-likeness of the RoboPet
 
 ## Developer Bio
 

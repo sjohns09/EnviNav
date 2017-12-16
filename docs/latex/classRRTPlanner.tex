@@ -1,0 +1,105 @@
+\hypertarget{classRRTPlanner}{}\section{R\+R\+T\+Planner Class Reference}
+\label{classRRTPlanner}\index{R\+R\+T\+Planner@{R\+R\+T\+Planner}}
+
+
+Inheritance diagram for R\+R\+T\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRRTPlanner__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for R\+R\+T\+Planner\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRRTPlanner__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classRRTPlanner_a1cbf32fc5cc6dd54404f3ffd25abe34c}{R\+R\+T\+Planner} ()\hypertarget{classRRTPlanner_a1cbf32fc5cc6dd54404f3ffd25abe34c}{}\label{classRRTPlanner_a1cbf32fc5cc6dd54404f3ffd25abe34c}
+
+\begin{DoxyCompactList}\small\item\em The default constructor for the \hyperlink{classRRTPlanner}{R\+R\+T\+Planner}. \end{DoxyCompactList}\item 
+\hyperlink{classRRTPlanner_a1f5ba162fab96f8efbf87f4b106d8790}{R\+R\+T\+Planner} (std\+::string name, costmap\+\_\+2d\+::\+Costmap2\+D\+R\+OS $\ast$costmap\+Ros)
+\begin{DoxyCompactList}\small\item\em Constructor for the \hyperlink{classRRTPlanner}{R\+R\+T\+Planner}. \end{DoxyCompactList}\item 
+void \hyperlink{classRRTPlanner_af5b3c48c51620d4e94f8a634589e86fb}{initialize} (std\+::string name, costmap\+\_\+2d\+::\+Costmap2\+D\+R\+OS $\ast$costmap\+Ros)
+\begin{DoxyCompactList}\small\item\em Initializes the planner. \end{DoxyCompactList}\item 
+bool \hyperlink{classRRTPlanner_ab9abaa15f3deee70dfda2de38f1a6e49}{make\+Plan} (const geometry\+\_\+msgs\+::\+Pose\+Stamped \&start, const geometry\+\_\+msgs\+::\+Pose\+Stamped \&goal, std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ \&plan)
+\begin{DoxyCompactList}\small\item\em Begins the path planner algorithm to generate a plan. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{R\+R\+T\+Planner@{R\+R\+T\+Planner}!R\+R\+T\+Planner@{R\+R\+T\+Planner}}
+\index{R\+R\+T\+Planner@{R\+R\+T\+Planner}!R\+R\+T\+Planner@{R\+R\+T\+Planner}}
+\subsubsection[{\texorpdfstring{R\+R\+T\+Planner(std\+::string name, costmap\+\_\+2d\+::\+Costmap2\+D\+R\+O\+S $\ast$costmap\+Ros)}{RRTPlanner(std::string name, costmap_2d::Costmap2DROS *costmapRos)}}]{\setlength{\rightskip}{0pt plus 5cm}R\+R\+T\+Planner\+::\+R\+R\+T\+Planner (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name, }
+\item[{costmap\+\_\+2d\+::\+Costmap2\+D\+R\+OS $\ast$}]{costmap\+Ros}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlanner_a1f5ba162fab96f8efbf87f4b106d8790}{}\label{classRRTPlanner_a1f5ba162fab96f8efbf87f4b106d8790}
+
+
+Constructor for the \hyperlink{classRRTPlanner}{R\+R\+T\+Planner}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the planner node \\
+\hline
+{\em costmap\+Ros} & The costmap to be used in path planning \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{R\+R\+T\+Planner@{R\+R\+T\+Planner}!initialize@{initialize}}
+\index{initialize@{initialize}!R\+R\+T\+Planner@{R\+R\+T\+Planner}}
+\subsubsection[{\texorpdfstring{initialize(std\+::string name, costmap\+\_\+2d\+::\+Costmap2\+D\+R\+O\+S $\ast$costmap\+Ros)}{initialize(std::string name, costmap_2d::Costmap2DROS *costmapRos)}}]{\setlength{\rightskip}{0pt plus 5cm}void R\+R\+T\+Planner\+::initialize (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{name, }
+\item[{costmap\+\_\+2d\+::\+Costmap2\+D\+R\+OS $\ast$}]{costmap\+Ros}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlanner_af5b3c48c51620d4e94f8a634589e86fb}{}\label{classRRTPlanner_af5b3c48c51620d4e94f8a634589e86fb}
+
+
+Initializes the planner. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the planner node \\
+\hline
+{\em costmap\+Ros} & The costmap to be used in path planning \\
+\hline
+\end{DoxyParams}
+\index{R\+R\+T\+Planner@{R\+R\+T\+Planner}!make\+Plan@{make\+Plan}}
+\index{make\+Plan@{make\+Plan}!R\+R\+T\+Planner@{R\+R\+T\+Planner}}
+\subsubsection[{\texorpdfstring{make\+Plan(const geometry\+\_\+msgs\+::\+Pose\+Stamped \&start, const geometry\+\_\+msgs\+::\+Pose\+Stamped \&goal, std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ \&plan)}{makePlan(const geometry_msgs::PoseStamped &start, const geometry_msgs::PoseStamped &goal, std::vector< geometry_msgs::PoseStamped > &plan)}}]{\setlength{\rightskip}{0pt plus 5cm}bool R\+R\+T\+Planner\+::make\+Plan (
+\begin{DoxyParamCaption}
+\item[{const geometry\+\_\+msgs\+::\+Pose\+Stamped \&}]{start, }
+\item[{const geometry\+\_\+msgs\+::\+Pose\+Stamped \&}]{goal, }
+\item[{std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ \&}]{plan}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlanner_ab9abaa15f3deee70dfda2de38f1a6e49}{}\label{classRRTPlanner_ab9abaa15f3deee70dfda2de38f1a6e49}
+
+
+Begins the path planner algorithm to generate a plan. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & The start pose of the robot \\
+\hline
+{\em goal} & The goal pose of the robot \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if no plan was found, and 1 if a plan was generated 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/sammie/catkin\+\_\+ws/src/envi\+\_\+nav/include/\hyperlink{RRTPlanner_8h}{R\+R\+T\+Planner.\+h}\item 
+/home/sammie/catkin\+\_\+ws/src/envi\+\_\+nav/src/\hyperlink{RRTPlanner_8cpp}{R\+R\+T\+Planner.\+cpp}\end{DoxyCompactItemize}
