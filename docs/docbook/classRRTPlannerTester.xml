@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="classRRTPlannerTester">
+<title>RRTPlannerTester class Reference</title>
+<para>Inheritance diagram for RRTPlannerTester</para>
+<para>
+    <figure>
+        <title>Inheritance graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classRRTPlannerTester__inherit__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+<para>Collaboration diagram for RRTPlannerTester</para>
+<para>
+    <figure>
+        <title>Collaboration graph</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="classRRTPlannerTester__coll__graph.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+        <section>
+            <title>Public Attributes</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>costmap_2d::Costmap2DROS * costmapRos</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title></title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para> <link linkend="classRRTPlannerTester_1a3b77858aa5e2df5990e4eb3920956ead">RRTPlannerTester</link> (
+)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para><link linkend="classRRTPlannerHelper">RRTPlannerHelper</link> <link linkend="classRRTPlannerTester_1af2bf60de841e92af66a7440831916886">getHelper</link> (
+)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+        <section>
+            <title>Member Data Documentation</title>
+        </section>
+            <section xml:id="classRRTPlannerTester_1a3b77858aa5e2df5990e4eb3920956ead">
+                <title>RRTPlannerTester::RRTPlannerTester ()</title> <emphasis></emphasis>
+                
+            </section>
+            <section xml:id="classRRTPlannerTester_1af2bf60de841e92af66a7440831916886">
+                <title>RRTPlannerHelper RRTPlannerTester::getHelper ()</title> <emphasis></emphasis>
+                
+            </section>
+</section>

@@ -1,0 +1,245 @@
+\hypertarget{classRRTPlannerHelper}{}\section{R\+R\+T\+Planner\+Helper Class Reference}
+\label{classRRTPlannerHelper}\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structRRTPlannerHelper_1_1qTree}{q\+Tree}
+\begin{DoxyCompactList}\small\item\em Structure that holds the data related to each node in the tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classRRTPlannerHelper_af99e3fe000e73de8256f59d89c592e96}{R\+R\+T\+Planner\+Helper} (costmap\+\_\+2d\+::\+Costmap2D $\ast$costmap, int mapX, int mapY, float resolution, float originX, float originY, const geometry\+\_\+msgs\+::\+Pose\+Stamped goal, const geometry\+\_\+msgs\+::\+Pose\+Stamped start)
+\begin{DoxyCompactList}\small\item\em Constructor for the class. \end{DoxyCompactList}\item 
+geometry\+\_\+msgs\+::\+Pose\+Stamped \hyperlink{classRRTPlannerHelper_aae3ca3af6424a1014af42db124e5cd4a}{rand\+\_\+config} ()
+\begin{DoxyCompactList}\small\item\em Gets a random X and Y coordinate to create a new node in the tree. \end{DoxyCompactList}\item 
+int \hyperlink{classRRTPlannerHelper_a939aa6f8a7eeb2142cc554a8790614bd}{nearest\+\_\+vertex} (geometry\+\_\+msgs\+::\+Pose\+Stamped q\+Rand, std\+::vector$<$ \hyperlink{structRRTPlannerHelper_1_1qTree}{q\+Tree} $>$ tree\+Graph)
+\begin{DoxyCompactList}\small\item\em Gets the nearest node in the tree. \end{DoxyCompactList}\item 
+bool \hyperlink{classRRTPlannerHelper_a4beec66805ee1ddd248b34054d62e3eb}{path\+\_\+safe} (geometry\+\_\+msgs\+::\+Pose\+Stamped q\+Rand, int i\+Near, std\+::vector$<$ \hyperlink{structRRTPlannerHelper_1_1qTree}{q\+Tree} $>$ tree\+Graph)
+\begin{DoxyCompactList}\small\item\em Checks that the path between the two nodes is safe. \end{DoxyCompactList}\item 
+bool \hyperlink{classRRTPlannerHelper_aebf2950bb391ab168ac677f56c851575}{check\+\_\+goal} (geometry\+\_\+msgs\+::\+Pose\+Stamped q\+New)
+\begin{DoxyCompactList}\small\item\em Checks that the path between the newly added node and the goal is safe. \end{DoxyCompactList}\item 
+std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ \hyperlink{classRRTPlannerHelper_a76d080da45ea6b5d7163dfc7bce3daf7}{build\+\_\+plan} (std\+::vector$<$ \hyperlink{structRRTPlannerHelper_1_1qTree}{q\+Tree} $>$ tree\+Graph)
+\begin{DoxyCompactList}\small\item\em Builds the planned path from the node tree. \end{DoxyCompactList}\item 
+void \hyperlink{classRRTPlannerHelper_afde8ae441b0c245d4ea35546cf3628c8}{rviz\+\_\+map} (double \&x, double \&y)
+\begin{DoxyCompactList}\small\item\em Converts the coordinates given from rviz to costmap coordinates. \end{DoxyCompactList}\item 
+void \hyperlink{classRRTPlannerHelper_a7616495b1de44739bc8decda8dce3691}{map\+\_\+rviz} (double \&x, double \&y)
+\begin{DoxyCompactList}\small\item\em Converts the coordinates from the costmap to rviz coordinates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ {\bfseries \+\_\+plan}\hypertarget{classRRTPlannerHelper_ac29ee7b115e06233770f5ae0adaabfc4}{}\label{classRRTPlannerHelper_ac29ee7b115e06233770f5ae0adaabfc4}
+
+\item 
+geometry\+\_\+msgs\+::\+Pose\+Stamped {\bfseries \+\_\+goal}\hypertarget{classRRTPlannerHelper_a05a168ac5796fa9223fc65e9a34adefd}{}\label{classRRTPlannerHelper_a05a168ac5796fa9223fc65e9a34adefd}
+
+\item 
+geometry\+\_\+msgs\+::\+Pose\+Stamped {\bfseries \+\_\+start}\hypertarget{classRRTPlannerHelper_a9ce6ea01d2c7fc50eb1ac295bedcab08}{}\label{classRRTPlannerHelper_a9ce6ea01d2c7fc50eb1ac295bedcab08}
+
+\item 
+costmap\+\_\+2d\+::\+Costmap2D $\ast$ {\bfseries \+\_\+costmap}\hypertarget{classRRTPlannerHelper_a8022e8bc3b5d3358cbad20d804045f1f}{}\label{classRRTPlannerHelper_a8022e8bc3b5d3358cbad20d804045f1f}
+
+\item 
+float {\bfseries \+\_\+resolution}\hypertarget{classRRTPlannerHelper_a10ec2c02a83af5ee89298a799581e508}{}\label{classRRTPlannerHelper_a10ec2c02a83af5ee89298a799581e508}
+
+\item 
+float {\bfseries \+\_\+originX}\hypertarget{classRRTPlannerHelper_a5420ff18107881ea63e902a0d3a74aac}{}\label{classRRTPlannerHelper_a5420ff18107881ea63e902a0d3a74aac}
+
+\item 
+float {\bfseries \+\_\+originY}\hypertarget{classRRTPlannerHelper_a08961873e85b14e462ea84c2d39c20ff}{}\label{classRRTPlannerHelper_a08961873e85b14e462ea84c2d39c20ff}
+
+\item 
+int {\bfseries \+\_\+map\+SizeX}\hypertarget{classRRTPlannerHelper_a69639eb4295147df9995de9a0727ff27}{}\label{classRRTPlannerHelper_a69639eb4295147df9995de9a0727ff27}
+
+\item 
+int {\bfseries \+\_\+map\+SizeY}\hypertarget{classRRTPlannerHelper_a70a60acd18da760aae8f8181c133faa7}{}\label{classRRTPlannerHelper_a70a60acd18da760aae8f8181c133faa7}
+
+\item 
+double {\bfseries \+\_\+allowed\+Dist}\hypertarget{classRRTPlannerHelper_a4f305d9c128499eba054960e29f1989d}{}\label{classRRTPlannerHelper_a4f305d9c128499eba054960e29f1989d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{R\+R\+T\+Planner\+Helper(costmap\+\_\+2d\+::\+Costmap2\+D $\ast$costmap, int map\+X, int map\+Y, float resolution, float origin\+X, float origin\+Y, const geometry\+\_\+msgs\+::\+Pose\+Stamped goal, const geometry\+\_\+msgs\+::\+Pose\+Stamped start)}{RRTPlannerHelper(costmap_2d::Costmap2D *costmap, int mapX, int mapY, float resolution, float originX, float originY, const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start)}}]{\setlength{\rightskip}{0pt plus 5cm}R\+R\+T\+Planner\+Helper\+::\+R\+R\+T\+Planner\+Helper (
+\begin{DoxyParamCaption}
+\item[{costmap\+\_\+2d\+::\+Costmap2D $\ast$}]{costmap, }
+\item[{int}]{mapX, }
+\item[{int}]{mapY, }
+\item[{float}]{resolution, }
+\item[{float}]{originX, }
+\item[{float}]{originY, }
+\item[{const geometry\+\_\+msgs\+::\+Pose\+Stamped}]{goal, }
+\item[{const geometry\+\_\+msgs\+::\+Pose\+Stamped}]{start}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_af99e3fe000e73de8256f59d89c592e96}{}\label{classRRTPlannerHelper_af99e3fe000e73de8256f59d89c592e96}
+
+
+Constructor for the class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em costmap} & The costmap used in path planning \\
+\hline
+{\em mapX} & The size of the map in x coordinates \\
+\hline
+{\em mapY} & The size of the map in y coordinates \\
+\hline
+{\em resolution} & The resolution of the costmap \\
+\hline
+{\em originX} & The x origin of the costmap \\
+\hline
+{\em originY} & The y origin of the costmap \\
+\hline
+{\em goal} & The given goal pose for the robot \\
+\hline
+{\em start} & The given start pose of the robot \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!build\+\_\+plan@{build\+\_\+plan}}
+\index{build\+\_\+plan@{build\+\_\+plan}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{build\+\_\+plan(std\+::vector$<$ q\+Tree $>$ tree\+Graph)}{build_plan(std::vector< qTree > treeGraph)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ geometry\+\_\+msgs\+::\+Pose\+Stamped $>$ R\+R\+T\+Planner\+Helper\+::build\+\_\+plan (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf q\+Tree} $>$}]{tree\+Graph}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_a76d080da45ea6b5d7163dfc7bce3daf7}{}\label{classRRTPlannerHelper_a76d080da45ea6b5d7163dfc7bce3daf7}
+
+
+Builds the planned path from the node tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tree\+Graph} & The set of all of the nodes in the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The global path plan that was generated by the R\+RT algorithm 
+\end{DoxyReturn}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!check\+\_\+goal@{check\+\_\+goal}}
+\index{check\+\_\+goal@{check\+\_\+goal}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{check\+\_\+goal(geometry\+\_\+msgs\+::\+Pose\+Stamped q\+New)}{check_goal(geometry_msgs::PoseStamped qNew)}}]{\setlength{\rightskip}{0pt plus 5cm}bool R\+R\+T\+Planner\+Helper\+::check\+\_\+goal (
+\begin{DoxyParamCaption}
+\item[{geometry\+\_\+msgs\+::\+Pose\+Stamped}]{q\+New}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_aebf2950bb391ab168ac677f56c851575}{}\label{classRRTPlannerHelper_aebf2950bb391ab168ac677f56c851575}
+
+
+Checks that the path between the newly added node and the goal is safe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q\+New} & The new configuration added to the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if path is blocked, and 1 if the path is clear 
+\end{DoxyReturn}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!map\+\_\+rviz@{map\+\_\+rviz}}
+\index{map\+\_\+rviz@{map\+\_\+rviz}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{map\+\_\+rviz(double \&x, double \&y)}{map_rviz(double &x, double &y)}}]{\setlength{\rightskip}{0pt plus 5cm}void R\+R\+T\+Planner\+Helper\+::map\+\_\+rviz (
+\begin{DoxyParamCaption}
+\item[{double \&}]{x, }
+\item[{double \&}]{y}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_a7616495b1de44739bc8decda8dce3691}{}\label{classRRTPlannerHelper_a7616495b1de44739bc8decda8dce3691}
+
+
+Converts the coordinates from the costmap to rviz coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The x component of the coordinate, this gets updated \\
+\hline
+{\em y} & The y component of the coordinate, this gets updated \\
+\hline
+\end{DoxyParams}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!nearest\+\_\+vertex@{nearest\+\_\+vertex}}
+\index{nearest\+\_\+vertex@{nearest\+\_\+vertex}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{nearest\+\_\+vertex(geometry\+\_\+msgs\+::\+Pose\+Stamped q\+Rand, std\+::vector$<$ q\+Tree $>$ tree\+Graph)}{nearest_vertex(geometry_msgs::PoseStamped qRand, std::vector< qTree > treeGraph)}}]{\setlength{\rightskip}{0pt plus 5cm}int R\+R\+T\+Planner\+Helper\+::nearest\+\_\+vertex (
+\begin{DoxyParamCaption}
+\item[{geometry\+\_\+msgs\+::\+Pose\+Stamped}]{q\+Rand, }
+\item[{std\+::vector$<$ {\bf q\+Tree} $>$}]{tree\+Graph}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_a939aa6f8a7eeb2142cc554a8790614bd}{}\label{classRRTPlannerHelper_a939aa6f8a7eeb2142cc554a8790614bd}
+
+
+Gets the nearest node in the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q\+Rand} & The randomly generated pose for the robot \\
+\hline
+{\em tree\+Graph} & The set of all of the nodes if the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The index of the nearest vertex in the tree 
+\end{DoxyReturn}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!path\+\_\+safe@{path\+\_\+safe}}
+\index{path\+\_\+safe@{path\+\_\+safe}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{path\+\_\+safe(geometry\+\_\+msgs\+::\+Pose\+Stamped q\+Rand, int i\+Near, std\+::vector$<$ q\+Tree $>$ tree\+Graph)}{path_safe(geometry_msgs::PoseStamped qRand, int iNear, std::vector< qTree > treeGraph)}}]{\setlength{\rightskip}{0pt plus 5cm}bool R\+R\+T\+Planner\+Helper\+::path\+\_\+safe (
+\begin{DoxyParamCaption}
+\item[{geometry\+\_\+msgs\+::\+Pose\+Stamped}]{q\+Rand, }
+\item[{int}]{i\+Near, }
+\item[{std\+::vector$<$ {\bf q\+Tree} $>$}]{tree\+Graph}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_a4beec66805ee1ddd248b34054d62e3eb}{}\label{classRRTPlannerHelper_a4beec66805ee1ddd248b34054d62e3eb}
+
+
+Checks that the path between the two nodes is safe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q\+Rand} & The new random configuration \\
+\hline
+{\em i\+Near} & The index of the nearest node in the tree \\
+\hline
+{\em tree\+Graph} & The set of all of the nodes in the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if the path is blocked, and 1 if the path is clear 
+\end{DoxyReturn}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!rand\+\_\+config@{rand\+\_\+config}}
+\index{rand\+\_\+config@{rand\+\_\+config}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{rand\+\_\+config()}{rand_config()}}]{\setlength{\rightskip}{0pt plus 5cm}geometry\+\_\+msgs\+::\+Pose\+Stamped R\+R\+T\+Planner\+Helper\+::rand\+\_\+config (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_aae3ca3af6424a1014af42db124e5cd4a}{}\label{classRRTPlannerHelper_aae3ca3af6424a1014af42db124e5cd4a}
+
+
+Gets a random X and Y coordinate to create a new node in the tree. 
+
+\begin{DoxyReturn}{Returns}
+A random configuration that lies in the costmap 
+\end{DoxyReturn}
+\index{R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}!rviz\+\_\+map@{rviz\+\_\+map}}
+\index{rviz\+\_\+map@{rviz\+\_\+map}!R\+R\+T\+Planner\+Helper@{R\+R\+T\+Planner\+Helper}}
+\subsubsection[{\texorpdfstring{rviz\+\_\+map(double \&x, double \&y)}{rviz_map(double &x, double &y)}}]{\setlength{\rightskip}{0pt plus 5cm}void R\+R\+T\+Planner\+Helper\+::rviz\+\_\+map (
+\begin{DoxyParamCaption}
+\item[{double \&}]{x, }
+\item[{double \&}]{y}
+\end{DoxyParamCaption}
+)}\hypertarget{classRRTPlannerHelper_afde8ae441b0c245d4ea35546cf3628c8}{}\label{classRRTPlannerHelper_afde8ae441b0c245d4ea35546cf3628c8}
+
+
+Converts the coordinates given from rviz to costmap coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The x component of the coordinate, this gets updated \\
+\hline
+{\em y} & The y component of the coordinate, this gets updated \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/sammie/catkin\+\_\+ws/src/envi\+\_\+nav/include/\hyperlink{RRTPlannerHelper_8h}{R\+R\+T\+Planner\+Helper.\+h}\item 
+/home/sammie/catkin\+\_\+ws/src/envi\+\_\+nav/src/\hyperlink{RRTPlannerHelper_8cpp}{R\+R\+T\+Planner\+Helper.\+cpp}\end{DoxyCompactItemize}

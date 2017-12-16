@@ -1,0 +1,20 @@
+<launch>
+	<!-- Map server -->
+   	<node name="map_server" pkg="map_server" type="map_server" args="$(find envi_nav)/test/maps/TestMap.yaml" />
+
+   	<!-- Localization -->
+   	<arg name="initial_pose_x" default="0.0"/>
+   	<arg name="initial_pose_y" default="0.0"/>
+   	<arg name="initial_pose_a" default="0.0"/>
+   	<include file="$(find turtlebot_navigation)/launch/includes/amcl/amcl.launch.xml">
+     	<arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+     	<arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+     	<arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+   	</include>
+   	
+  	<test 
+  		test-name="EnviNavTests" 
+  		pkg="envi_nav" 
+  		type="EnviNavTests" 
+  	/>
+</launch>

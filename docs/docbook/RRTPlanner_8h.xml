@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="RRTPlanner_8h">
+    <title>RRTPlanner.h File Reference</title>
+    <programlisting>#include &lt;ros/ros.h&gt;</programlisting>
+    <programlisting>#include &lt;costmap_2d/costmap_2d_ros.h&gt;</programlisting>
+    <programlisting>#include &lt;costmap_2d/costmap_2d.h&gt;</programlisting>
+    <programlisting>#include &lt;nav_core/base_global_planner.h&gt;</programlisting>
+    <programlisting>#include &lt;geometry_msgs/PoseStamped.h&gt;</programlisting>
+    <programlisting>#include &lt;pluginlib/class_list_macros.h&gt;</programlisting>
+    <programlisting>#include &lt;algorithm&gt;</programlisting>
+    <programlisting>#include &lt;vector&gt;</programlisting>
+    <programlisting>#include &lt;string&gt;</programlisting>
+<para>Include dependency diagram for RRTPlanner.h</para>
+<para>
+    <figure>
+        <title>Dependency diagram</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="RRTPlanner_8h__incl.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+<para>Included by dependency diagram for RRTPlanner.h</para>
+<para>
+    <figure>
+        <title>Dependency diagram</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="1" fileref="RRTPlanner_8h__dep__incl.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </figure>
+</para>
+        <section>
+            <title> Classes </title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>struct <link linkend="classRRTPlanner">RRTPlanner</link></para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </section>
+    <simplesect>
+        <title>Detailed Description</title>
+
+<para>Global path planner implementing the RRT algorithm. </para>
+
+<para><formalpara><title>Author: </title>
+
+<para>Samantha Johnson </para>
+</formalpara>
+<formalpara><title>Date: </title>
+
+<para>December 15, 2017  BSD 3-Clause License </para>
+</formalpara>
+<formalpara><title>Copyright: </title>
+
+<para>(c) 2017, Samantha Johnson All rights reserved.</para>
+</formalpara>
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</para>
+
+<para>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</para>
+
+<para>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</para>
+
+<para>Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</para>
+
+<para>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</para>
+
+<para>This plugin was created to interface with the nav_core/base_global_planner framework and replace the default global planner used in the navigation stack. This plugin uses an RRT algorithm which generates a path by creating a tree full of random nodes that are connected to their nearest node neighbor if the path is clear. Once the goal is reached by the tree, the planner returns a path which is a connection of the nodes in the tree that traverse from start to goal. </para>
+    <para>Definition in file /home/sammie/catkin_ws/src/envi_nav/include/RRTPlanner.h</para>
+    </simplesect>
+</section>

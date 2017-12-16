@@ -1,0 +1,20 @@
+./src/RRTPlannerHelper.cpp:88:  Consider using rand_r(...) instead of rand(...) for improved thread safety.  [runtime/threadsafe_fn] [2]
+./src/RRTPlannerHelper.cpp:89:  Consider using rand_r(...) instead of rand(...) for improved thread safety.  [runtime/threadsafe_fn] [2]
+Done processing ./src/RRTPlannerHelper.cpp
+./src/RRTPlanner.cpp:86:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+Done processing ./src/RRTPlanner.cpp
+./src/mapping_demo.cpp:50:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+./src/mapping_demo.cpp:52:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+Done processing ./src/mapping_demo.cpp
+Done processing ./src/MapBuild.cpp
+Done processing ./test/EnviNavTests.cpp
+./include/RRTPlanner.h:83:  Is this a non-const reference? If so, make const or use a pointer: std::vector<geometry_msgs::PoseStamped>& plan  [runtime/references] [2]
+Done processing ./include/RRTPlanner.h
+Done processing ./include/MapBuild.h
+./include/RRTPlannerHelper.h:124:  Is this a non-const reference? If so, make const or use a pointer: double& x  [runtime/references] [2]
+./include/RRTPlannerHelper.h:124:  Is this a non-const reference? If so, make const or use a pointer: double& y  [runtime/references] [2]
+./include/RRTPlannerHelper.h:131:  Is this a non-const reference? If so, make const or use a pointer: double& x  [runtime/references] [2]
+./include/RRTPlannerHelper.h:131:  Is this a non-const reference? If so, make const or use a pointer: double& y  [runtime/references] [2]
+Done processing ./include/RRTPlannerHelper.h
+Total errors found: 10
+

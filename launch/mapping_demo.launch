@@ -1,5 +1,7 @@
 <launch>
 	
+	<arg name="record_bag" default = "false"/>
+	
 	<node
 		pkg="envi_nav" 
 		type="mapping_demo" 
@@ -7,6 +9,14 @@
 		output="screen"
 		launch-prefix="xterm -e"
 		required="true"
+	/>
+	
+	<node
+		pkg="rosbag"
+		type="record"
+		name="envi_nav_bag"
+		args="-a --duration=30 -O mapping_demo.bag"
+		if="$(arg record_bag)"
 	/>
 
 	<include file="$(find turtlebot_gazebo)/launch/turtlebot_world.launch" >

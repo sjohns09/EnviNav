@@ -1,0 +1,8 @@
+<library path="lib/libenvi_nav">
+	<class 
+		name="RRTPlanner" 
+		type="RRTPlanner"
+		base_class_type="nav_core::BaseGlobalPlanner" >
+		<description This is a global planner plugin implementing RRT. />
+	</class>
+</library>
