@@ -48,6 +48,9 @@ The first tab of this sheet contains the Worklog, and the second tab contains th
 
 The envi_nav module consists of two parts which each contain demos that are dependent on one another. Both of these parts work together to create an optimal navigation experience for the robot. Details on each demo's functionality is discussed below.
 
+## Tutorial Video Link
+https://youtu.be/nrz8G9DYvh0
+
 ### Mapping Demo
 
 The mapping demo is the first step in the envi_nav module. The robot needs to discover its environment before it can accurately navigate to various locations. To discover its environment, the robot will be driven around the world while using laser scanning to determine safe and unsafe areas of its world.
