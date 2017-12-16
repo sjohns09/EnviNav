@@ -1,4 +1,4 @@
-image: /home/sammie/catkin_ws/src/envi_nav/maps/home.pgm
+image: home.pgm
 resolution: 0.050000
 origin: [-13.800000, -12.200000, 0.000000]
 negate: 0
