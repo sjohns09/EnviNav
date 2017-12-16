@@ -35,12 +35,11 @@
  * @details Allows the user to save the map being built in the navigation demo
  * by typing a simple command.
  */
- 
+#include "MapBuild.h"
+#include <ros/ros.h>
 #include <sstream>
 #include <string>
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "MapBuild.h"
+
 
 MapBuild::MapBuild() {
 }
@@ -48,7 +47,7 @@ MapBuild::MapBuild() {
 void MapBuild::save_map() {
   system("rosrun map_server map_saver -f $(rospack find envi_nav)/maps/home");
   ROS_INFO("Map Saved!");
-  std::cout << "Press ctrl^C twice in terminal running launch file to Quit";
+  ROS_INFO("Press ctrl^C twice in terminal running launch file to Quit");
 }
 
 MapBuild::~MapBuild() {

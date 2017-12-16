@@ -35,23 +35,26 @@
  * @details Allows the user to save the map being built in the navigation demo
  * by typing a simple command.
  */
+#include <ros/ros.h>
+#include <sstream>
+#include <string>
 
-#ifndef ENVI_NAV_SRC_MAPBUILD_H_
-#define ENVI_NAV_SRC_MAPBUILD_H_
+
+#ifndef INCLUDE_MAPBUILD_H_
+#define INCLUDE_MAPBUILD_H_
 
 class MapBuild {
  public:
-   
   /**
-  * @brief The default constructor for the MapBuild class
-  */
+   * @brief The default constructor for the MapBuild class
+   */
   MapBuild();
-  
+
   /**
-  * @brief Saves the map being built by the navigation demo
-  */
+   * @brief Saves the map being built by the navigation demo
+   */
   void save_map();
   virtual ~MapBuild();
 };
 
-#endif /* ENVI_NAV_SRC_MAPBUILD_H_ */
+#endif /* INCLUDE_MAPBUILD_H_ */

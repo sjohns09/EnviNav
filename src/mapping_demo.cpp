@@ -35,23 +35,23 @@
  * @details Provides detailed instructions for building the map that is used with the
  * navigation demo.
  */
-
+#include <ros/ros.h>
+#include "MapBuild.h"
 #include <sstream>
 #include <string>
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "MapBuild.h"
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "mapping_demo");
   ros::NodeHandle n;
-  
   MapBuild map;
 
   std::string a = "";
-  ROS_INFO("In the terminal window, use the keyboard to drive the robot around to build the map");
-  ROS_INFO("Useful Keys: 'I' or ',' - Forward/Backward, 'J' or 'L' - Rotate, 'Q' or 'Z' - Inc/Dec Speed");
-  ROS_INFO("When done building the map, type 'save' in this window and press enter");
+  ROS_INFO(
+      "In the terminal window, use the keyboard to drive the robot around to build the map");
+  ROS_INFO(
+      "Useful Keys: 'I' or ',' - Forward/Backward, 'J' or 'L' - Rotate, 'Q' or 'Z' - Inc/Dec Speed");
+  ROS_INFO(
+      "When done building the map, type 'save' in this window and press enter");
 
   std::cin >> a;
   if (a == "save") {

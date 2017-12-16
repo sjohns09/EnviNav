@@ -39,20 +39,16 @@
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.
  */
-
+#include "RRTPlanner.h"
+#include "RRTPlannerHelper.h"
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
 #include <nav_core/base_global_planner.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <angles/angles.h>
+#include <pluginlib/class_list_macros.h>
 #include <algorithm>
 #include <vector>
-#include <base_local_planner/world_model.h>
-#include <base_local_planner/costmap_model.h>
-#include <pluginlib/class_list_macros.h>
-#include "RRTPlanner.h"
-#include <RRTPlannerHelper.h>
 
 PLUGINLIB_EXPORT_CLASS(RRTPlanner, nav_core::BaseGlobalPlanner)
 
@@ -91,19 +87,17 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     return false;
   }
 
-  ROS_INFO("Got a start: (%f, %f), and a goal: (%f, %f)",
-           start.pose.position.x, start.pose.position.y, goal.pose.position.x,
-           goal.pose.position.y);
+  ROS_INFO("Got a start: (%f, %f), and a goal: (%f, %f)", start.pose.position.x,
+           start.pose.position.y, goal.pose.position.x, goal.pose.position.y);
 
   std::vector<RRTPlannerHelper::qTree> treeGraph;
-  RRTPlannerHelper helper(costmap, mapSizeX, mapSizeY, resolution,
-                                originX, originY, goal, start);
+  RRTPlannerHelper helper(costmap, mapSizeX, mapSizeY, resolution, originX,
+                          originY, goal, start);
   plan.clear();
 
   bool done = false;
   bool safe = false;
   bool build = false;
-  int iNear;
   geometry_msgs::PoseStamped qRand;
 
   _start = start;
@@ -139,7 +133,7 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     qRand = helper.rand_config();
 
     // Find nearest Vertex in tree
-    iNear = helper.nearest_vertex(qRand, treeGraph);
+    int iNear = helper.nearest_vertex(qRand, treeGraph);
 
     // If distance is too far, do not add node
     if (iNear != -1) {
@@ -180,7 +174,4 @@ bool RRTPlanner::makePlan(const geometry_msgs::PoseStamped& start,
   return done;
 }
 
-RRTPlanner::~RRTPlanner() {
-
-}
-
+RRTPlanner::~RRTPlanner() {}

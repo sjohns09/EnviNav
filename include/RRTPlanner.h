@@ -39,19 +39,18 @@
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.
  */
-
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
 #include <nav_core/base_global_planner.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <angles/angles.h>
-#include <base_local_planner/world_model.h>
-#include <base_local_planner/costmap_model.h>
+#include <pluginlib/class_list_macros.h>
+#include <algorithm>
+#include <vector>
+#include <string>
 
-
-#ifndef ENVI_NAV_SRC_RRTPLANNER_H_
-#define ENVI_NAV_SRC_RRTPLANNER_H_
+#ifndef INCLUDE_RRTPLANNER_H_
+#define INCLUDE_RRTPLANNER_H_
 
 class RRTPlanner : public nav_core::BaseGlobalPlanner {
  public:
@@ -95,4 +94,4 @@ class RRTPlanner : public nav_core::BaseGlobalPlanner {
   bool _initialized;
 };
 
-#endif /* ENVI_NAV_SRC_RRTPLANNER_H_ */
+#endif /* INCLUDE_RRTPLANNER_H_ */

@@ -38,18 +38,14 @@
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.
  */
-
+#include "RRTPlannerHelper.h"
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
 #include <nav_core/base_global_planner.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <angles/angles.h>
 #include <algorithm>
-#include <base_local_planner/world_model.h>
-#include <base_local_planner/costmap_model.h>
-#include <pluginlib/class_list_macros.h>
-#include "RRTPlannerHelper.h"
+#include <vector>
 
 RRTPlannerHelper::RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int mapX,
                                    int mapY, float resolution, float originX,
@@ -86,13 +82,11 @@ RRTPlannerHelper::RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int mapX,
 geometry_msgs::PoseStamped RRTPlannerHelper::rand_config() {
   geometry_msgs::PoseStamped randPose;
   bool found = false;
-  int randX;
-  int randY;
 
   while (!found) {
     // Get Map Size and sample XY in costmap
-    randX = rand() % _mapSizeX;
-    randY = rand() % _mapSizeY;
+    int randX = rand() % _mapSizeX;
+    int randY = rand() % _mapSizeY;
 
     if (_costmap->getCost(randX, randY) == 0) {
       found = true;
@@ -118,16 +112,13 @@ int RRTPlannerHelper::nearest_vertex(geometry_msgs::PoseStamped qRand,
                                      std::vector<qTree> _treeGraph) {
   int iNear = 0;
   double minDist = 1000;
-  double dist;
-  double xDif;
-  double yDif;
 
   for (int node = 0; node < _treeGraph.size(); node++) {
     // Find closest x y
-    xDif = qRand.pose.position.x - _treeGraph[node].q.pose.position.x;
-    yDif = qRand.pose.position.y - _treeGraph[node].q.pose.position.y;
+    double xDif = qRand.pose.position.x - _treeGraph[node].q.pose.position.x;
+    double yDif = qRand.pose.position.y - _treeGraph[node].q.pose.position.y;
 
-    dist = sqrt((pow(xDif, 2)) + (pow(yDif, 2)));
+    double dist = sqrt((pow(xDif, 2)) + (pow(yDif, 2)));
 
     if (dist < minDist) {
       minDist = dist;
@@ -147,7 +138,6 @@ bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear,
   double y2 = _treeGraph[iNear].q.pose.position.y;
   double x1 = qRand.pose.position.x;
   double y1 = qRand.pose.position.y;
-  double y, x;
   unsigned int xCell;
   unsigned int yCell;
   bool free = true;
@@ -163,9 +153,9 @@ bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear,
     double xMin = std::min(x1, x2);
 
     for (double x = xMin; x <= xMax; x++) {
-      xCell = (int) round(x);
-      y = m * x + b;
-      yCell = (int) round(y);
+      xCell = static_cast<int>(round(x));
+      double y = m * x + b;
+      yCell = static_cast<int>(round(y));
 
       unsigned char xCost = _costmap->getCost(xCell, yCell);
       if (xCost != 0) {
@@ -181,8 +171,8 @@ bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear,
 
     if (x1 == x2) {
       for (double y = yMin; y <= yMax; y++) {
-        yCell = (int) round(y);
-        xCell = (int) round(x1);
+        yCell = static_cast<int>(round(y));
+        xCell = static_cast<int>(round(x1));
 
         unsigned char yCost = _costmap->getCost(xCell, yCell);
         if (yCost != 0) {
@@ -194,9 +184,9 @@ bool RRTPlannerHelper::path_safe(geometry_msgs::PoseStamped qRand, int iNear,
       double m = (y2 - y1) / (x2 - x1);
       double b = y1 - (m * x1);
       for (double y = yMin; y <= yMax; y++) {
-        yCell = (int) round(y);
-        x = (y - b) / m;
-        xCell = (int) round(x);
+        yCell = static_cast<int>(round(y));
+        double x = (y - b) / m;
+        xCell = static_cast<int>(round(x));
 
         unsigned char yCost = _costmap->getCost(xCell, yCell);
         if (yCost != 0) {
@@ -226,7 +216,6 @@ bool RRTPlannerHelper::check_goal(geometry_msgs::PoseStamped qNew) {
   double y1 = qNew.pose.position.y;
   double m = (y2 - y1) / (x2 - x1);
   double b = y1 - (m * x1);
-  double y, x;
   unsigned int xCell;
   unsigned int yCell;
   bool free = true;
@@ -240,9 +229,9 @@ bool RRTPlannerHelper::check_goal(geometry_msgs::PoseStamped qNew) {
     double xMin = std::min(x1, x2);
 
     for (double x = xMin; x <= xMax; x++) {
-      xCell = (int) round(x);
-      y = m * x + b;
-      yCell = (int) round(y);
+      xCell = static_cast<int>(round(x));
+      double y = m * x + b;
+      yCell = static_cast<int>(round(y));
 
       unsigned char xCost = _costmap->getCost(xCell, yCell);
       if (xCost != 0) {
@@ -258,8 +247,8 @@ bool RRTPlannerHelper::check_goal(geometry_msgs::PoseStamped qNew) {
       double yMin = std::min(y1, y2);
 
       for (double y = yMin; y <= yMax; y++) {
-        yCell = (int) round(y);
-        xCell = (int) round(x1);
+        yCell = static_cast<int>(round(y));
+        xCell = static_cast<int>(round(x1));
 
         unsigned char yCost = _costmap->getCost(xCell, yCell);
         if (yCost != 0) {
@@ -274,9 +263,9 @@ bool RRTPlannerHelper::check_goal(geometry_msgs::PoseStamped qNew) {
       double yMin = std::min(y1, y2);
 
       for (double y = yMin; y <= yMax; y++) {
-        yCell = (int) round(y);
-        x = (y - b) / m;
-        xCell = (int) round(x);
+        yCell = static_cast<int>(round(y));
+        double x = (y - b) / m;
+        xCell = static_cast<int>(round(x));
 
         unsigned char yCost = _costmap->getCost(xCell, yCell);
         if (yCost != 0) {
@@ -296,14 +285,13 @@ std::vector<geometry_msgs::PoseStamped> RRTPlannerHelper::build_plan(
   ROS_INFO("Building Plan");
   _plan.clear();
   qTree qAdd = _treeGraph.back();
-  double nearI;
 
   while (qAdd.myIndex != 0) {
-    //Add pose to plan starting with goal
+    // Add pose to plan starting with goal
     _plan.insert(_plan.begin(), qAdd.q);
 
-    //Get neighbor of added vertex
-    nearI = qAdd.nearIndex;
+    // Get neighbor of added vertex
+    double nearI = qAdd.nearIndex;
     qAdd = _treeGraph[nearI];
   }
   // Add start to plan

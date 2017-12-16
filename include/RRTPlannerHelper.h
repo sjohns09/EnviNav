@@ -38,18 +38,15 @@
  * reached by the tree, the planner returns a path which is a connection of the nodes in
  * the tree that traverse from start to goal.
  */
-
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
 #include <nav_core/base_global_planner.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <angles/angles.h>
-#include <base_local_planner/world_model.h>
-#include <base_local_planner/costmap_model.h>
+#include <vector>
 
-#ifndef ENVI_NAV_INCLUDE_RRTPLANNERHELPER_H_
-#define ENVI_NAV_INCLUDE_RRTPLANNERHELPER_H_
+#ifndef INCLUDE_RRTPLANNERHELPER_H_
+#define INCLUDE_RRTPLANNERHELPER_H_
 
 class RRTPlannerHelper {
  public:
@@ -66,7 +63,8 @@ class RRTPlannerHelper {
    */
   RRTPlannerHelper(costmap_2d::Costmap2D* costmap, int mapX, int mapY,
                    float resolution, float originX, float originY,
-                   const geometry_msgs::PoseStamped goal, const geometry_msgs::PoseStamped start);
+                   const geometry_msgs::PoseStamped goal,
+                   const geometry_msgs::PoseStamped start);
   /**
    * @struct qTree
    * @brief Structure that holds the data related to each node in the tree
@@ -141,4 +139,4 @@ class RRTPlannerHelper {
   double _allowedDist;
 };
 
-#endif /* ENVI_NAV_INCLUDE_RRTPLANNERHELPER_H_ */
+#endif /* INCLUDE_RRTPLANNERHELPER_H_ */

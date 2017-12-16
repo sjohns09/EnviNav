@@ -35,17 +35,17 @@
  * @details Tests for the RRT algorithm used as a global path planner plugin
  * to the navigation stack
  */
-
-#include <gtest/gtest.h>
-#include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <costmap_2d/costmap_2d.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <tf/transform_listener.h>
 #include <pluginlib/class_loader.h>
 #include <nav_core/base_global_planner.h>
-#include "ros/ros.h"
+#include <gtest/gtest.h>
+#include <ros/ros.h>
 #include "RRTPlannerHelper.h"
+#include <vector>
+
 
 class RRTPlannerTester {
  public:
@@ -54,51 +54,47 @@ class RRTPlannerTester {
   costmap_2d::Costmap2DROS* costmapRos;
 };
 
-RRTPlannerTester* tester = NULL;
-costmap_2d::Costmap2D* _costmap;
-
 RRTPlannerTester::RRTPlannerTester() {
   tf::TransformListener tf(ros::Duration(10));
   costmapRos = new costmap_2d::Costmap2DROS("test_costmap", tf);
 }
 
 RRTPlannerHelper RRTPlannerTester::getHelper() {
+  costmap_2d::Costmap2D* _costmap = costmapRos->getCostmap();
 
-  _costmap = costmapRos->getCostmap();
+  int _mapSizeX = 10;
+  int _mapSizeY = 10;
+  float _resolution = 1;
+  float _originX = 0;
+  float _originY = 0;
 
-    int _mapSizeX = 10;
-    int _mapSizeY = 10;
-    float _resolution = 1;
-    float _originX = 0;
-    float _originY = 0;
+  geometry_msgs::PoseStamped givenStartFill;
+  geometry_msgs::PoseStamped givenGoalFill;
 
-    geometry_msgs::PoseStamped givenStartFill;
-    geometry_msgs::PoseStamped givenGoalFill;
+  givenStartFill.pose.position.x = 1;
+  givenStartFill.pose.position.y = 1;
+  givenStartFill.pose.position.z = 0;
+  givenStartFill.pose.orientation.x = 0;
+  givenStartFill.pose.orientation.y = 0;
+  givenStartFill.pose.orientation.z = 0;
+  givenStartFill.pose.orientation.w = 1;
 
-    givenStartFill.pose.position.x = 1;
-    givenStartFill.pose.position.y = 1;
-    givenStartFill.pose.position.z = 0;
-    givenStartFill.pose.orientation.x = 0;
-    givenStartFill.pose.orientation.y = 0;
-    givenStartFill.pose.orientation.z = 0;
-    givenStartFill.pose.orientation.w = 1;
+  givenGoalFill.pose.position.x = 9;
+  givenGoalFill.pose.position.y = 9;
+  givenGoalFill.pose.position.z = 0;
+  givenGoalFill.pose.orientation.x = 0;
+  givenGoalFill.pose.orientation.y = 0;
+  givenGoalFill.pose.orientation.z = 0;
+  givenGoalFill.pose.orientation.w = 1;
 
-    givenGoalFill.pose.position.x = 9;
-    givenGoalFill.pose.position.y = 9;
-    givenGoalFill.pose.position.z = 0;
-    givenGoalFill.pose.orientation.x = 0;
-    givenGoalFill.pose.orientation.y = 0;
-    givenGoalFill.pose.orientation.z = 0;
-    givenGoalFill.pose.orientation.w = 1;
+  const geometry_msgs::PoseStamped& _goal = givenGoalFill;
+  const geometry_msgs::PoseStamped& _start = givenStartFill;
 
-    const geometry_msgs::PoseStamped& _goal = givenGoalFill;
-    const geometry_msgs::PoseStamped& _start = givenStartFill;
+  RRTPlannerHelper helper(_costmap, _mapSizeX, _mapSizeY, _resolution, _originX,
+                          _originY, _goal, _start);
+  ROS_INFO("Helper Initialized");
 
-    RRTPlannerHelper helper(_costmap, _mapSizeX, _mapSizeY, _resolution, _originX,
-                            _originY, _goal, _start);
-    ROS_INFO("Helper Initialized");
-
-    return helper;
+  return helper;
 }
 
 TEST(RRTPlannerHelper_test, testRandomNodeReturnedInMap) {
@@ -146,7 +142,6 @@ TEST(RRTPlanner_test, testNearestNodeReturnedFromTreeGraph) {
   int iNear = helper.nearest_vertex(q, tree);
 
   EXPECT_EQ(iNear, 2);
-
 }
 
 TEST(RRTPlanner_test, testPathBetweenNodesIsSafe) {
